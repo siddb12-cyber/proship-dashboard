@@ -78,3 +78,80 @@
 - Delivered=770 RTO=35 NDR=20 EDD=36 OTD=95.8
 - Output: C:\Users\siddh\Downloads\HK\Proship\Proship Performance Dashboard\output\dashboard.html (581.7 KB)
 - NEXT: Drop new MIS CSV into input/ and re-run
+
+### [2026-06-05 00:22] v3 Run
+- STATUS: DASHBOARD GENERATED
+- Shipments=1736 Locked=1004 Active=732
+- Delivered=1000 RTO=63 NDR=20 EDD=44 OTD=95.0
+- Output: C:\Users\siddh\Downloads\HK\Proship\Proship Performance Dashboard\output\dashboard.html (692.0 KB)
+- NEXT: Drop new MIS CSV into input/ and re-run
+
+### [2026-06-07 12:46] v3 Run
+- STATUS: DASHBOARD GENERATED
+- Shipments=3034 Locked=1235 Active=1799
+- Delivered=1224 RTO=82 NDR=27 EDD=56 OTD=94.8
+- Output: C:\Users\siddh\Downloads\HK\Proship\Proship Performance Dashboard\output\dashboard.html (1147.0 KB)
+- NEXT: Drop new MIS CSV into input/ and re-run
+
+### [2026-06-08 08:55] v3 Run
+- STATUS: DASHBOARD GENERATED
+- Shipments=3479 Locked=1302 Active=2177
+- Delivered=1288 RTO=93 NDR=24 EDD=50 OTD=94.5
+- Output: C:\Users\siddh\Downloads\HK\Proship\Proship Performance Dashboard\output\dashboard.html (1302.4 KB)
+- NEXT: Drop new MIS CSV into input/ and re-run
+
+### [2026-06-09 09:06] v3 Run
+- STATUS: DASHBOARD GENERATED
+- Shipments=4285 Locked=1553 Active=2732
+- Delivered=1537 RTO=103 NDR=24 EDD=72 OTD=94.9
+- Output: C:\Users\siddh\Downloads\HK\Proship\Proship Performance Dashboard\output\dashboard.html (1587.7 KB)
+- NEXT: Drop new MIS CSV into input/ and re-run
+
+### [2026-06-13 09:38] v3 Run
+- STATUS: DASHBOARD GENERATED
+- Shipments=7095 Locked=3519 Active=3576
+- Delivered=3473 RTO=221 NDR=48 EDD=135 OTD=96.0
+- Output: C:\Users\siddh\Downloads\HK\Proship\Proship Performance Dashboard\output\dashboard.html (2602.2 KB)
+- NEXT: Drop new MIS CSV into input/ and re-run
+
+### [2026-06-24 11:21] v3 Run
+- STATUS: DASHBOARD GENERATED
+- Shipments=16077 Locked=11962 Active=4115
+- Delivered=11760 RTO=675 NDR=78 EDD=380 OTD=94.4
+- Output: C:\Users\siddh\Downloads\HK\Proship\Proship Performance Dashboard\output\dashboard.html (5892.0 KB)
+- NEXT: Drop new MIS CSV into input/ and re-run
+
+### [2026-07-06 11:04] v3 Run
+- STATUS: DASHBOARD GENERATED
+- Shipments=24094 Locked=19991 Active=4103
+- Delivered=19168 RTO=1303 NDR=137 EDD=415 OTD=93.6
+- Output: C:\Users\siddh\Downloads\HK\Proship\Proship Performance Dashboard\output\dashboard.html (8784.0 KB)
+- NEXT: Drop new MIS CSV into input/ and re-run
+
+### [2026-07-08 09:27] v3 Run
+- STATUS: DASHBOARD GENERATED
+- Shipments=25684 Locked=21357 Active=4327
+- Delivered=20382 RTO=1409 NDR=126 EDD=491 OTD=93.7
+- Output: C:\Users\siddh\Downloads\HK\Proship\Proship Performance Dashboard\output\dashboard.html (9357.2 KB)
+- NEXT: Drop new MIS CSV into input/ and re-run
+
+### [2026-07-08 09:34] v3 Run
+- STATUS: DASHBOARD GENERATED
+- Shipments=25684 Locked=21357 Active=4327
+- Delivered=20382 RTO=1409 NDR=126 EDD=491 OTD=93.7
+- Output: /sessions/festive-charming-bohr/mnt/Proship Performance Dashboard/output/dashboard.html (9356.3 KB)
+- NEXT: Drop new MIS CSV into input/ and re-run
+
+### [2026-07-08 09:37] v3 Run
+- STATUS: DASHBOARD GENERATED
+- Shipments=25684 Locked=21357 Active=4327
+- Delivered=20382 RTO=1409 NDR=126 EDD=491 OTD=93.7
+- Output: /sessions/festive-charming-bohr/mnt/Proship Performance Dashboard/output/dashboard.html (9356.3 KB)
+- NEXT: Drop new MIS CSV into input/ and re-run
+
+### [2026-07-08 09:39] v3 Run
+- STATUS: DASHBOARD GENERATED
+- Shipments=25684 Locked=21357 Active=4327
+- Delivered=20382 RTO=1409 NDR=126 EDD=491 OTD=93.7
+- Output: C:\Users\siddh\Downloads\HK\Proship\Proship Performance Dashboard\output\dashboard.html (9368.4 KB)
+- NEXT: Drop new MIS CSV into input/ and re-run

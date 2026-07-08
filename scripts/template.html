@@ -3,368 +3,428 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Proship Dashboard — Haus &amp; Kinder</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Proship · Haus &amp; Kinder</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-:root {
-  --bg:      #F5F1EB;
-  --surface: #FFFFFF;
-  --surface2:#FAF8F4;
-  --border:  rgba(60,35,10,.10);
-  --text:    #1C1510;
-  --muted:   #7A6E63;
-  --accent:  #8B3A52;
-  --accent2: #B5687F;
-  --green:   #2A7A50;
-  --amber:   #C07820;
-  --red:     #C04030;
-  --orange:  #C56010;
-  --teal:    #1E7070;
-  --sidebar: 230px;
+:root{
+  --bg:#F4F2EF;--surface:#FFFFFF;--s2:#F8F6F3;--s3:#F0EDE8;
+  --border:rgba(0,0,0,.07);--border2:rgba(0,0,0,.12);
+  --text:#18150F;--sub:#6B6560;--hint:#A09890;
+  --accent:#8C3A50;--accent-lt:#F5E8EC;--accent-dk:#6A2A3C;
+  --green:#2A7A52;--green-lt:#E8F5EE;
+  --amber:#B87020;--amber-lt:#FDF3E2;
+  --red:#C03840;--red-lt:#FAEAEA;
+  --teal:#1A7070;--teal-lt:#E4F4F4;
+  --orange:#C55A18;--orange-lt:#FDEEE4;
+  --sb:200px;
+  --r:12px;--r-sm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,.10);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;font-size:14px}
-/* ── Sidebar ── */
-#sidebar{width:var(--sidebar);min-width:var(--sidebar);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto}
-.sb-logo{padding:20px 16px 16px;border-bottom:1px solid var(--border)}
-.hk-logo{font-family:'DM Sans',sans-serif;font-weight:700;font-size:18px;letter-spacing:.08em;color:var(--accent);line-height:1.1}
-.hk-logo span{font-weight:300;font-size:13px;letter-spacing:.2em;display:block;color:var(--accent2)}
-.proship-tag{font-size:10px;color:var(--muted);letter-spacing:.06em;margin-top:6px;font-weight:500;text-transform:uppercase}
-.sb-nav{flex:1;padding:10px 8px}
-.sb-section{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:10px 10px 4px}
-.nav-item{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;cursor:pointer;color:var(--muted);font-size:13px;font-weight:500;transition:all .15s;margin-bottom:1px}
-.nav-item:hover{background:var(--surface2);color:var(--text)}
-.nav-item.active{background:#F5E8EC;color:var(--accent);font-weight:600}
-.nav-item .icon{width:16px;text-align:center;font-size:14px}
-.nav-item .badge{margin-left:auto;background:var(--accent);color:#fff;font-size:10px;padding:1px 6px;border-radius:10px;font-weight:600}
-.sb-footer{padding:12px 14px;border-top:1px solid var(--border)}
-.sb-meta{font-size:10px;color:var(--muted);line-height:1.7}
-.sb-meta strong{color:var(--text);font-weight:600}
-/* ── Main ── */
-#main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
-/* ── Filter bar ── */
-#filter-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 20px;position:sticky;top:0;z-index:50}
-.filter-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.filter-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
-.filter-input{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:5px 10px;font-size:12px;color:var(--text);font-family:'DM Sans',sans-serif;cursor:pointer;transition:border-color .15s}
-.filter-input:focus{outline:none;border-color:var(--accent)}
-.filter-date{width:130px}
-.filter-sep{color:var(--muted);font-size:11px}
-.filter-btn{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:5px 12px;font-size:12px;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
-.filter-btn:hover{border-color:var(--accent);color:var(--accent)}
-.chip-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;min-height:4px}
-.chip{display:inline-flex;align-items:center;gap:4px;background:#F5E8EC;color:var(--accent);font-size:11px;padding:3px 8px;border-radius:12px;font-weight:500}
-.chip-x{cursor:pointer;font-size:13px;line-height:1;opacity:.7}
-.chip-x:hover{opacity:1}
-.dd-wrap{position:relative;display:inline-block}
-.dd-btn{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:5px 10px;font-size:12px;color:var(--text);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif}
-.dd-btn::after{content:'▾';font-size:10px;color:var(--muted)}
-.dd-panel{display:none;position:absolute;top:calc(100%+4px);left:0;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:180px;max-height:260px;overflow-y:auto;z-index:200}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;font-size:13px;line-height:1.4}
+
+/* ── SIDEBAR ── */
+#sb{width:var(--sb);min-width:var(--sb);background:var(--text);display:flex;flex-direction:column;height:100vh;overflow-y:auto;flex-shrink:0}
+.sb-brand{padding:20px 16px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-hk{font-size:15px;font-weight:800;letter-spacing:.12em;color:#fff;line-height:1.1}
+.sb-hk em{font-style:normal;font-weight:300;color:rgba(255,255,255,.5);letter-spacing:.22em;font-size:9px;display:block;margin-top:3px}
+.sb-proship{font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2,#B5687F);margin-top:5px;padding:2px 6px;background:rgba(140,58,80,.3);border-radius:4px;width:fit-content}
+.sb-nav{flex:1;padding:8px 8px}
+.sb-gr{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:12px 10px 5px}
+.nav-i{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.55);font-size:12px;font-weight:500;margin-bottom:1px;transition:all .15s;white-space:nowrap}
+.nav-i:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.85)}
+.nav-i.on{background:var(--accent);color:#fff}
+.nav-i .ic{font-size:13px;width:18px;text-align:center;flex-shrink:0}
+.nav-i .bdg{margin-left:auto;background:rgba(255,255,255,.15);color:#fff;font-size:9px;padding:2px 6px;border-radius:10px;font-weight:700}
+.nav-i.on .bdg{background:rgba(255,255,255,.25)}
+.sb-foot{padding:12px 14px;border-top:1px solid rgba(255,255,255,.07)}
+.sb-stat{font-size:10px;color:rgba(255,255,255,.4);line-height:2}
+.sb-stat strong{color:rgba(255,255,255,.75);font-weight:600}
+.sb-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:4px;vertical-align:middle}
+
+/* ── MAIN ── */
+#main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;min-width:0}
+
+/* ── TOPBAR ── */
+#topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;gap:10px;flex-shrink:0;z-index:50}
+.tb-title{font-size:15px;font-weight:700;color:var(--text)}
+.tb-sub{font-size:12px;color:var(--sub);margin-left:2px}
+.tb-sep{width:1px;height:20px;background:var(--border2);margin:0 4px}
+.filter-chip-row{display:flex;align-items:center;gap:6px;flex:1;overflow-x:auto;scrollbar-width:none}
+.filter-chip-row::-webkit-scrollbar{display:none}
+.f-input{background:var(--s2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--text);font-family:'Inter',sans-serif;transition:border-color .15s}
+.f-input:focus{outline:none;border-color:var(--accent)}
+.f-date{width:118px}
+.f-sep{color:var(--hint);font-size:10px}
+.dd-wrap{position:relative}
+.dd-btn{background:var(--s2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--sub);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;transition:all .15s}
+.dd-btn:hover,.dd-btn.open-dd{border-color:var(--accent);color:var(--accent)}
+.dd-btn::after{content:'▾';font-size:9px;opacity:.6}
+.dd-panel{display:none;position:absolute;top:calc(100%+4px);left:0;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-md);min-width:170px;max-height:240px;overflow-y:auto;z-index:300}
 .dd-panel.open{display:block}
-.dd-item{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;font-size:13px;transition:background .1s}
-.dd-item:hover{background:var(--surface2)}
-.dd-item input[type=checkbox]{accent-color:var(--accent);width:14px;height:14px}
-/* ── Content ── */
-#content{flex:1;padding:24px 24px 40px}
+.dd-item{display:flex;align-items:center;gap:8px;padding:7px 12px;cursor:pointer;font-size:12px;transition:background .1s}
+.dd-item:hover{background:var(--s2)}
+.dd-item input[type=checkbox]{accent-color:var(--accent);width:13px;height:13px}
+.chip{display:inline-flex;align-items:center;gap:4px;background:var(--accent-lt);color:var(--accent);font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600;white-space:nowrap}
+.chip-x{cursor:pointer;opacity:.6;font-size:12px;line-height:1}
+.chip-x:hover{opacity:1}
+.btn-clear{background:transparent;border:1px solid var(--border2);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--sub);cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap}
+.btn-clear:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ── CONTENT AREA ── */
+#content{flex:1;overflow-y:auto;overflow-x:hidden;padding:20px}
 .section{display:none}
-.section.active{display:block}
-.page-title{font-size:22px;font-weight:700;color:var(--text);margin-bottom:2px}
-.page-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
-/* ── KPI Cards ── */
-.kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:16px}
-.kpi{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative;overflow:hidden}
-.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
-.kpi.green::before{background:var(--green)}
-.kpi.amber::before{background:var(--amber)}
-.kpi.red::before{background:var(--red)}
-.kpi.teal::before{background:var(--teal)}
-.kpi.accent::before{background:var(--accent)}
-.kpi.orange::before{background:var(--orange)}
-.kpi-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
-.kpi-val{font-size:28px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text);line-height:1}
-.kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
-/* ── Cards/Charts ── */
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px}
-.card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
-.chart-box{position:relative;height:240px}
-.chart-box.tall{height:300px}
-.chart-box.sm{height:180px}
-/* ── Tables ── */
-.tbl-wrap{overflow-x:auto;max-height:400px;overflow-y:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{background:var(--surface2);color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em;padding:9px 12px;text-align:left;position:sticky;top:0;cursor:pointer;white-space:nowrap}
+.section.on{display:block}
+
+/* ── HERO STRIP (overview top) ── */
+.hero-strip{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.hero-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero-card.featured{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dk) 100%);border:none;color:#fff}
+.hero-card.featured .hc-label{color:rgba(255,255,255,.65)}
+.hero-card.featured .hc-sub{color:rgba(255,255,255,.6)}
+.hc-label{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sub);margin-bottom:6px}
+.hc-val{font-size:28px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:-.02em;line-height:1}
+.hc-sub{font-size:11px;color:var(--sub);margin-top:5px}
+.hc-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:8px;font-size:10px;font-weight:600;margin-top:6px}
+.hc-badge.up{background:var(--green-lt);color:var(--green)}
+.hc-badge.dn{background:var(--red-lt);color:var(--red)}
+.hc-badge.warn{background:var(--amber-lt);color:var(--amber)}
+.hc-badge.neu{background:var(--s3);color:var(--sub)}
+.hc-bar{position:absolute;bottom:0;left:0;right:0;height:3px}
+.featured .hc-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:36px;opacity:.15}
+
+/* ── GRID LAYOUTS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.g-6040{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;margin-bottom:14px}
+.g-4060{display:grid;grid-template-columns:1fr 1.6fr;gap:14px;margin-bottom:14px}
+
+/* ── CARDS ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
+.card-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.card-title{font-size:13px;font-weight:600;color:var(--text)}
+.card-badge{font-size:10px;font-weight:600;color:var(--sub);background:var(--s2);padding:2px 8px;border-radius:6px}
+.chart-h240{height:240px;position:relative}
+.chart-h200{height:200px;position:relative}
+.chart-h180{height:180px;position:relative}
+.chart-h300{height:300px;position:relative}
+.chart-h160{height:160px;position:relative}
+
+/* ── SECTION KPI ROW ── */
+.kpi4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.kpi5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.kpi3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0}
+.kpi.g::before{background:var(--green)}
+.kpi.a::before{background:var(--amber)}
+.kpi.r::before{background:var(--red)}
+.kpi.t::before{background:var(--teal)}
+.kpi.p::before{background:var(--accent)}
+.kpi.o::before{background:var(--orange)}
+.kpi-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--sub);margin-bottom:5px}
+.kpi-v{font-size:24px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:-.01em;line-height:1}
+.kpi-s{font-size:11px;color:var(--sub);margin-top:4px}
+
+/* ── TABLES ── */
+.tbl-wrap{overflow-x:auto;max-height:360px;overflow-y:auto}
+.tbl-wrap.tall{max-height:440px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead tr{position:sticky;top:0;z-index:2}
+th{background:var(--s2);color:var(--sub);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);cursor:pointer;white-space:nowrap}
 th:hover{color:var(--text)}
-td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text)}
-tr:hover td{background:var(--surface2)}
-.mono{font-family:'DM Mono',monospace;font-size:12px}
-/* ── Status pills ── */
-.pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;white-space:nowrap}
-.pill-green{background:#E6F5EE;color:var(--green)}
-.pill-red{background:#FAEAE8;color:var(--red)}
-.pill-amber{background:#FEF5E2;color:var(--amber)}
-.pill-orange{background:#FEF0E2;color:var(--orange)}
-.pill-blue{background:#E8EFF8;color:#2A5EA8}
-.pill-muted{background:var(--surface2);color:var(--muted)}
-/* ── Courier badges ── */
-.cb{display:inline-flex;align-items:center;gap:5px}
-.cb-dot{width:20px;height:20px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
-/* ── Metric bars ── */
-.mbar-wrap{margin:6px 0}
-.mbar-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:3px}
-.mbar-track{height:5px;background:var(--surface2);border-radius:3px;overflow:hidden}
-.mbar-fill{height:100%;border-radius:3px;transition:width .3s}
-/* ── Tabs ── */
-.tabs{display:flex;gap:2px;background:var(--surface2);padding:3px;border-radius:9px;margin-bottom:16px;width:fit-content}
-.tab{padding:6px 16px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);transition:all .15s}
-.tab.active{background:var(--surface);color:var(--accent);font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.08)}
-/* ── Alert panel ── */
-.alerts{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-.alert{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:10px;font-size:13px}
-.alert.critical{background:#FAEAE8;border-left:3px solid var(--red)}
-.alert.warning{background:#FEF5E2;border-left:3px solid var(--amber)}
-.alert.info{background:#E8EFF8;border-left:3px solid #5B8DD9}
-.alert-icon{font-size:15px;flex-shrink:0;margin-top:1px}
-.alert-text{color:var(--text);line-height:1.5}
-.alert-text strong{font-weight:600}
-/* ── Assess pills ── */
-.assess-good{background:#E6F5EE;color:var(--green);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
-.assess-watch{background:#FEF5E2;color:var(--amber);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
-.assess-critical{background:#FAEAE8;color:var(--red);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
-/* ── Pagination ── */
-.pagination{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;color:var(--muted)}
-.page-btn{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif}
-.page-btn:hover{border-color:var(--accent);color:var(--accent)}
-.page-btn:disabled{opacity:.4;cursor:default}
-/* ── Insight box ── */
-.insight{background:#F5E8EC;border:1px solid rgba(139,58,82,.15);border-radius:10px;padding:12px 16px;font-size:13px;color:var(--accent);margin:10px 0;line-height:1.6}
-/* ── Playbook card ── */
-.playbook{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:10px}
-.pk-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px}
-.pk-reason{font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px}
-.pk-action{font-size:12px;color:var(--muted);line-height:1.5}
-/* ── Section filter row ── */
-.sec-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
-.sec-filter input[type=text]{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:5px 10px;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--text);width:200px}
-.sec-filter input:focus{outline:none;border-color:var(--accent)}
-.sec-filter select{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:5px 10px;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--text)}
-/* ── Radar fix ── */
-canvas{max-width:100%}
-/* ── Scrollbar ── */
-::-webkit-scrollbar{width:5px;height:5px}
+td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--s2)}
+.mono{font-family:'DM Mono',monospace;font-size:11px}
+
+/* ── PILLS ── */
+.pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;white-space:nowrap}
+.p-g{background:var(--green-lt);color:var(--green)}
+.p-r{background:var(--red-lt);color:var(--red)}
+.p-a{background:var(--amber-lt);color:var(--amber)}
+.p-o{background:var(--orange-lt);color:var(--orange)}
+.p-t{background:var(--teal-lt);color:var(--teal)}
+.p-b{background:#EAF0FA;color:#2A5EA8}
+.p-m{background:var(--s3);color:var(--sub)}
+
+/* ── COURIER BADGE ── */
+.cb{display:inline-flex;align-items:center;gap:6px;font-weight:500}
+.cb-dot{width:22px;height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0;letter-spacing:.02em}
+
+/* ── METRIC BAR ── */
+.mb{margin:8px 0}
+.mb-hd{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px}
+.mb-hd span{color:var(--sub)}
+.mb-hd strong{color:var(--text);font-weight:600}
+.mb-tr{height:6px;background:var(--s3);border-radius:3px;overflow:hidden}
+.mb-fl{height:100%;border-radius:3px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+
+/* ── SCORECARD CARD ── */
+.sc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
+.sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sc-vol{font-size:11px;color:var(--sub);font-weight:500}
+
+/* ── ALERTS ── */
+.alert-strip{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.alert{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:10px;font-size:12px;line-height:1.5}
+.alert.crit{background:var(--red-lt);border-left:3px solid var(--red)}
+.alert.warn{background:var(--amber-lt);border-left:3px solid var(--amber)}
+.alert.ok{background:var(--green-lt);border-left:3px solid var(--green)}
+.alert .ai{font-size:14px;flex-shrink:0;margin-top:1px}
+.alert strong{font-weight:700}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:2px;background:var(--s2);padding:3px;border-radius:9px;margin-bottom:14px;width:fit-content}
+.tab{padding:6px 16px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;color:var(--sub);transition:all .15s}
+.tab.on{background:var(--surface);color:var(--accent);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+
+/* ── SEC FILTERS ── */
+.sf{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.sf input[type=text],.sf select{background:var(--s2);border:1px solid var(--border);border-radius:6px;padding:5px 9px;font-size:11px;font-family:'Inter',sans-serif;color:var(--text)}
+.sf input[type=text]:focus,.sf select:focus{outline:none;border-color:var(--accent)}
+.sf input[type=text]{width:190px}
+
+/* ── PAGINATION ── */
+.pag{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:11px;color:var(--sub)}
+.pag-btn{background:var(--s2);border:1px solid var(--border);border-radius:6px;padding:3px 10px;cursor:pointer;font-size:11px;font-family:'Inter',sans-serif;transition:all .15s}
+.pag-btn:hover{border-color:var(--accent);color:var(--accent)}
+.pag-btn:disabled{opacity:.35;cursor:default}
+
+/* ── EXPORT BUTTONS ── */
+.exp-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;border:none;transition:all .15s;white-space:nowrap}
+.exp-btn svg{width:13px;height:13px;flex-shrink:0}
+.exp-btn-primary{background:var(--accent);color:#fff}
+.exp-btn-primary:hover{background:var(--accent-dk,#6A2A3C)}
+.exp-btn-outline{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.exp-btn-outline:hover{background:var(--accent-lt)}
+.exp-btn-warn{background:var(--amber);color:#fff}
+.exp-btn-warn:hover{background:#9A6018}
+.exp-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:var(--s2);border-radius:8px;margin-bottom:12px;border:1px solid var(--border)}
+.exp-bar-label{font-size:11px;font-weight:600;color:var(--sub);text-transform:uppercase;letter-spacing:.08em;margin-right:4px}
+
+/* ── INSIGHT BOX ── */
+.insight{background:var(--accent-lt);border:1px solid rgba(140,58,80,.15);border-radius:9px;padding:11px 14px;font-size:12px;color:var(--accent);line-height:1.6;margin:8px 0}
+
+/* ── ASSESS ── */
+.good{background:var(--green-lt);color:var(--green);padding:2px 8px;border-radius:8px;font-size:10px;font-weight:600}
+.watch{background:var(--amber-lt);color:var(--amber);padding:2px 8px;border-radius:8px;font-size:10px;font-weight:600}
+.critical{background:var(--red-lt);color:var(--red);padding:2px 8px;border-radius:8px;font-size:10px;font-weight:600}
+
+/* ── PLAYBOOK ── */
+.pbook{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:8px}
+.pb-card{background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:13px}
+.pb-r{font-size:12px;font-weight:600;margin-bottom:5px}
+.pb-a{font-size:11px;color:var(--sub);line-height:1.5}
+
+/* ── ACTIVITY ROW (overview bottom) ── */
+.activity-row{display:flex;flex-direction:column;gap:7px}
+.act-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--s2);border-radius:8px;font-size:12px}
+.act-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.act-meta{margin-left:auto;font-size:11px;color:var(--sub);white-space:nowrap}
+
+::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+canvas{max-width:100%}
 </style>
 </head>
 <body>
 
-<!-- ── Sidebar ───────────────────────────────────────────────────── -->
-<nav id="sidebar">
-  <div class="sb-logo">
-    <div class="hk-logo">HAUS <span>&amp;</span> KINDER</div>
-    <div class="hk-logo" style="font-size:10px;font-weight:400;letter-spacing:.18em;color:var(--muted);margin-top:2px">PROSHIP · LOGISTICS</div>
-    <div class="proship-tag" id="sb-gen-time">Dashboard</div>
+<!-- ════════════ SIDEBAR ════════════ -->
+<nav id="sb">
+  <div class="sb-brand">
+    <div class="sb-hk">HAUS &amp; KINDER<em>&amp; &nbsp; KINDER</em></div>
+    <div class="sb-proship">PROSHIP · LOGISTICS</div>
   </div>
   <div class="sb-nav">
-    <div class="sb-section">Operations</div>
-    <div class="nav-item active" onclick="showSection('overview')">
-      <span class="icon">📊</span> Overview
-    </div>
-    <div class="nav-item" onclick="showSection('courier')">
-      <span class="icon">🚚</span> Courier Scorecard
-    </div>
-    <div class="nav-item" onclick="showSection('sla')">
-      <span class="icon">⏱️</span> SLA &amp; EDD
-    </div>
-    <div class="nav-item" onclick="showSection('breach')">
-      <span class="icon">🚨</span> EDD Breach Split
-      <span class="badge" id="sb-breach-cnt">0</span>
-    </div>
-    <div class="nav-item" onclick="showSection('ndr')">
-      <span class="icon">↩️</span> NDR &amp; RTO
-    </div>
-    <div class="nav-item" onclick="showSection('geo')">
-      <span class="icon">🗺️</span> Geographic
-    </div>
-    <div class="nav-item" onclick="showSection('trend')">
-      <span class="icon">📈</span> Volume Trend
-    </div>
-    <div class="nav-item" onclick="showSection('qty')">
-      <span class="icon">📦</span> Quantity &amp; RTO
-    </div>
+    <div class="sb-gr">Dashboard</div>
+    <div class="nav-i on" onclick="go('ov')"><span class="ic">▦</span> Overview</div>
+    <div class="nav-i" onclick="go('sc')"><span class="ic">🚚</span> Courier Scorecard</div>
+    <div class="nav-i" onclick="go('sl')"><span class="ic">⏱</span> SLA &amp; EDD</div>
+    <div class="nav-i" onclick="go('br')"><span class="ic">🚨</span> EDD Breach <span class="bdg" id="sb-br">0</span></div>
+    <div class="sb-gr">Analysis</div>
+    <div class="nav-i" onclick="go('nd')"><span class="ic">↩</span> NDR &amp; RTO</div>
+    <div class="nav-i" onclick="go('ge')"><span class="ic">🗺</span> Geographic</div>
+    <div class="nav-i" onclick="go('tr')"><span class="ic">📈</span> Volume Trend</div>
+    <div class="nav-i" onclick="go('qt')"><span class="ic">📦</span> Qty &amp; RTO</div>
   </div>
-  <div class="sb-footer">
-    <div class="sb-meta">
-      <strong id="sb-total">—</strong> total shipments<br>
-      <strong id="sb-locked">—</strong> historical locked<br>
-      <strong id="sb-active">—</strong> active tracked<br>
-      <span id="sb-date-range" style="font-size:9px">—</span>
+  <div class="sb-foot">
+    <div class="sb-stat">
+      <span class="sb-dot"></span><strong id="sb-tot">—</strong> shipments<br>
+      <strong id="sb-lk">—</strong> historical · <strong id="sb-ac">—</strong> active<br>
+      <span id="sb-dr" style="font-size:9px;opacity:.6">—</span>
     </div>
+    <div style="margin-top:8px;font-size:9px;color:rgba(255,255,255,.25)" id="sb-gen">—</div>
   </div>
 </nav>
 
-<!-- ── Main ──────────────────────────────────────────────────────── -->
+<!-- ════════════ MAIN ════════════ -->
 <div id="main">
 
-  <!-- Filter bar -->
-  <div id="filter-bar">
-    <div class="filter-row">
-      <span class="filter-label">Pickup</span>
-      <input type="date" class="filter-input filter-date" id="f-pu-from">
-      <span class="filter-sep">→</span>
-      <input type="date" class="filter-input filter-date" id="f-pu-to">
-      <span class="filter-label" style="margin-left:8px">EDD</span>
-      <input type="date" class="filter-input filter-date" id="f-edd-from">
-      <span class="filter-sep">→</span>
-      <input type="date" class="filter-input filter-date" id="f-edd-to">
-      <div class="dd-wrap" id="ddw-courier">
-        <div class="dd-btn" onclick="toggleDD('ddp-courier')">Courier</div>
-        <div class="dd-panel" id="ddp-courier"></div>
+  <!-- TOP BAR + FILTERS -->
+  <div id="topbar">
+    <span class="tb-title" id="tb-title">Overview</span>
+    <div class="tb-sep"></div>
+    <span style="font-size:10px;color:var(--sub);white-space:nowrap">Pickup</span>
+    <input type="date" class="f-input f-date" id="f-pf">
+    <span class="f-sep">→</span>
+    <input type="date" class="f-input f-date" id="f-pt">
+    <div class="tb-sep"></div>
+    <div class="dd-wrap"><div class="dd-btn" onclick="tdd('ddp-c')">Courier</div><div class="dd-panel" id="ddp-c"></div></div>
+    <div class="dd-wrap"><div class="dd-btn" onclick="tdd('ddp-s')">State</div><div class="dd-panel" id="ddp-s"></div></div>
+    <div class="dd-wrap"><div class="dd-btn" onclick="tdd('ddp-z')">Zone</div><div class="dd-panel" id="ddp-z"></div></div>
+    <div class="dd-wrap"><div class="dd-btn" onclick="tdd('ddp-r')">Region</div><div class="dd-panel" id="ddp-r"></div></div>
+    <div class="dd-wrap"><div class="dd-btn" onclick="tdd('ddp-p')">Payment</div><div class="dd-panel" id="ddp-p"></div></div>
+    <button class="btn-clear" onclick="clearF()">Clear</button>
+    <div class="filter-chip-row" id="chips"></div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <span style="font-size:10px;color:var(--sub);white-space:nowrap" id="tb-count"></span>
+      <div class="dd-wrap" style="position:relative">
+        <button class="exp-btn exp-btn-primary" style="font-size:10px;padding:4px 10px" onclick="tdd('ddp-exp')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px"><path d="M8 2v8M5 7l3 3 3-3M3 13h10"/></svg>Export</button>
+        <div class="dd-panel" id="ddp-exp" style="right:0;left:auto;min-width:220px">
+          <div style="padding:6px 10px 4px;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sub)">Quick Exports</div>
+          <label onclick="expAll();tdd('ddp-exp')" style="cursor:pointer;display:block;padding:7px 12px;font-size:12px;color:var(--text);border-radius:5px;transition:background .1s" onmouseover="this.style.background='var(--s2)'" onmouseout="this.style.background=''">📊 Full Filtered Data</label>
+          <label onclick="expBr('all');tdd('ddp-exp')" style="cursor:pointer;display:block;padding:7px 12px;font-size:12px;color:var(--text);border-radius:5px;transition:background .1s" onmouseover="this.style.background='var(--s2)'" onmouseout="this.style.background=''">🚨 All EDD Breaches</label>
+          <label onclick="expBr('not_attempted');tdd('ddp-exp')" style="cursor:pointer;display:block;padding:7px 12px;font-size:12px;color:var(--text);border-radius:5px;transition:background .1s" onmouseover="this.style.background='var(--s2)'" onmouseout="this.style.background=''">⛔ Not Attempted Breaches</label>
+          <label onclick="expBrCourier();tdd('ddp-exp')" style="cursor:pointer;display:block;padding:7px 12px;font-size:12px;color:var(--text);border-radius:5px;transition:background .1s" onmouseover="this.style.background='var(--s2)'" onmouseout="this.style.background=''">📬 Courier Escalation Pack</label>
+          <label onclick="expNdr();tdd('ddp-exp')" style="cursor:pointer;display:block;padding:7px 12px;font-size:12px;color:var(--text);border-radius:5px;transition:background .1s" onmouseover="this.style.background='var(--s2)'" onmouseout="this.style.background=''">⚠️ NDR / Failed Deliveries</label>
+          <label onclick="expRto();tdd('ddp-exp')" style="cursor:pointer;display:block;padding:7px 12px;font-size:12px;color:var(--text);border-radius:5px;transition:background .1s" onmouseover="this.style.background='var(--s2)'" onmouseout="this.style.background=''">↩️ RTO Shipments</label>
+          <label onclick="expLost();tdd('ddp-exp')" style="cursor:pointer;display:block;padding:7px 12px;font-size:12px;color:var(--accent);font-weight:600;border-radius:5px;transition:background .1s" onmouseover="this.style.background='var(--s2)'" onmouseout="this.style.background=''">🔴 Lost / Stuck 21+ Days</label>
+        </div>
       </div>
-      <div class="dd-wrap" id="ddw-state">
-        <div class="dd-btn" onclick="toggleDD('ddp-state')">State</div>
-        <div class="dd-panel" id="ddp-state"></div>
-      </div>
-      <div class="dd-wrap" id="ddw-zone">
-        <div class="dd-btn" onclick="toggleDD('ddp-zone')">Zone</div>
-        <div class="dd-panel" id="ddp-zone"></div>
-      </div>
-      <div class="dd-wrap" id="ddw-region">
-        <div class="dd-btn" onclick="toggleDD('ddp-region')">Region</div>
-        <div class="dd-panel" id="ddp-region"></div>
-      </div>
-      <div class="dd-wrap" id="ddw-pm">
-        <div class="dd-btn" onclick="toggleDD('ddp-pm')">Payment</div>
-        <div class="dd-panel" id="ddp-pm"></div>
-      </div>
-      <button class="filter-btn" onclick="clearFilters()">Clear All</button>
     </div>
-    <div class="chip-row" id="chip-row"></div>
   </div>
 
-  <!-- Sections -->
+  <!-- CONTENT -->
   <div id="content">
 
-    <!-- 1. Overview -->
-    <div class="section active" id="sec-overview">
-      <div class="page-title">Operations Overview</div>
-      <div class="page-sub">Proship courier performance</div>
-      <div class="kpi-row" id="kpi-row1"></div>
-      <div class="kpi-row" id="kpi-row2"></div>
-      <div id="alerts-panel"></div>
-      <div class="grid2">
-        <div class="card"><div class="card-title">Daily Dispatch vs Delivery</div><div class="chart-box"><canvas id="ch-daily"></canvas></div></div>
-        <div class="card"><div class="card-title">Active Shipment Aging</div><div class="chart-box"><canvas id="ch-aging"></canvas></div></div>
+    <!-- ── 1. OVERVIEW ── -->
+    <div class="section on" id="sec-ov">
+      <!-- HERO STRIP -->
+      <div class="hero-strip" id="hs"></div>
+      <!-- ALERT -->
+      <div class="alert-strip" id="al"></div>
+      <!-- MAIN ROW: trend chart + courier panel -->
+      <div class="g-6040">
+        <div class="card">
+          <div class="card-hd"><span class="card-title">Daily Dispatch vs Delivery</span><span class="card-badge" id="ov-dr">Last 30 days</span></div>
+          <div class="chart-h240"><canvas id="ch-daily"></canvas></div>
+        </div>
+        <div class="card" style="display:flex;flex-direction:column;gap:0">
+          <div class="card-hd"><span class="card-title">Courier Split</span></div>
+          <div class="chart-h180"><canvas id="ch-cvol"></canvas></div>
+          <div id="courier-sla-mini" style="margin-top:10px"></div>
+        </div>
       </div>
-      <div class="grid2">
-        <div class="card"><div class="card-title">Courier Volume Split</div><div class="chart-box"><canvas id="ch-courier-vol"></canvas></div></div>
-        <div class="card"><div class="card-title">SLA Summary</div><div id="sla-summary"></div></div>
+      <!-- BOTTOM ROW: aging + performance snapshot -->
+      <div class="g3">
+        <div class="card">
+          <div class="card-hd"><span class="card-title">Active Shipment Aging</span></div>
+          <div class="chart-h160"><canvas id="ch-age"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><span class="card-title">Performance Snapshot</span></div>
+          <div id="perf-snap"></div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><span class="card-title">Zone Breakdown</span></div>
+          <div class="chart-h160"><canvas id="ch-zone"></canvas></div>
+        </div>
       </div>
     </div>
 
-    <!-- 2. Courier Scorecard -->
-    <div class="section" id="sec-courier">
-      <div class="page-title">Courier Scorecard</div>
-      <div class="page-sub">Performance comparison across all courier partners</div>
-      <div id="courier-cards" class="grid2" style="margin-bottom:16px"></div>
-      <div class="grid2">
-        <div class="card"><div class="card-title">Performance Radar (Top 4)</div><div class="chart-box"><canvas id="ch-radar"></canvas></div></div>
-        <div class="card"><div class="card-title">EDD Breach % by Courier</div><div class="chart-box"><canvas id="ch-breach-bar"></canvas></div></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Avg Door-to-Door Days by Courier</div>
-        <div class="chart-box sm"><canvas id="ch-d2d-courier"></canvas></div>
+    <!-- ── 2. COURIER SCORECARD ── -->
+    <div class="section" id="sec-sc">
+      <div class="kpi4" id="sc-kpi"></div>
+      <div class="g2" id="sc-cards"></div>
+      <div class="g2">
+        <div class="card"><div class="card-hd"><span class="card-title">Radar — Top 4 Couriers</span></div><div class="chart-h240"><canvas id="ch-radar"></canvas></div></div>
+        <div class="card"><div class="card-hd"><span class="card-title">Avg Door-to-Door (days)</span></div><div class="chart-h240"><canvas id="ch-d2dc"></canvas></div></div>
       </div>
     </div>
 
-    <!-- 3. SLA & EDD -->
-    <div class="section" id="sec-sla">
-      <div class="page-title">SLA &amp; EDD Performance</div>
-      <div class="page-sub">Delivery promise tracking and breach analytics</div>
-      <div class="kpi-row" id="sla-kpi-row"></div>
-      <div class="grid2">
-        <div class="card"><div class="card-title">D2D Distribution</div><div class="chart-box"><canvas id="ch-d2d-dist"></canvas></div></div>
-        <div class="card"><div class="card-title">EDD Breach by Courier</div><div class="chart-box"><canvas id="ch-edd-courier"></canvas></div></div>
+    <!-- ── 3. SLA & EDD ── -->
+    <div class="section" id="sec-sl">
+      <div class="kpi5" id="sl-kpi"></div>
+      <div class="g2">
+        <div class="card"><div class="card-hd"><span class="card-title">D2D Distribution</span></div><div class="chart-h240"><canvas id="ch-d2d"></canvas></div></div>
+        <div class="card"><div class="card-hd"><span class="card-title">EDD Breach % by Courier</span></div><div class="chart-h240"><canvas id="ch-eddc"></canvas></div></div>
       </div>
-      <div class="card"><div class="card-title">Delay Root Causes</div><div class="tbl-wrap" id="delay-table"></div></div>
+      <div class="card"><div class="card-hd"><span class="card-title">Courier SLA Detail</span></div><div class="tbl-wrap" id="sl-tbl"></div></div>
     </div>
 
-    <!-- 4. EDD Breach Split -->
-    <div class="section" id="sec-breach">
-      <div class="page-title">EDD Breach Split</div>
-      <div class="page-sub">AWB-level view of all EDD breached shipments</div>
-      <div class="kpi-row" id="breach-kpi-row"></div>
-      <div class="sec-filter">
-        <select id="bf-courier" onchange="renderBreach()"><option value="">All Couriers</option></select>
-        <select id="bf-state" onchange="renderBreach()"><option value="">All States</option></select>
-        <select id="bf-status" onchange="renderBreach()"><option value="">All Statuses</option></select>
-        <input type="text" id="bf-search" placeholder="Search AWB / city…" oninput="renderBreach()">
+    <!-- ── 4. EDD BREACH SPLIT ── -->
+    <div class="section" id="sec-br">
+      <div class="kpi4" id="br-kpi"></div>
+      <div class="sf">
+        <select id="bf-c" onchange="rBr()"><option value="">All Couriers</option></select>
+        <select id="bf-s" onchange="rBr()"><option value="">All States</option></select>
+        <select id="bf-st" onchange="rBr()"><option value="">All Statuses</option></select>
+        <input type="text" id="bf-q" placeholder="Search AWB / city…" oninput="rBr()">
+      </div>
+      <div class="exp-bar">
+        <span class="exp-bar-label">⬇ Export</span>
+        <button class="exp-btn exp-btn-primary" onclick="expBr('all')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v8M5 7l3 3 3-3M3 13h10"/></svg>All Breaches</button>
+        <button class="exp-btn exp-btn-outline" onclick="expBr('attempted')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v8M5 7l3 3 3-3M3 13h10"/></svg>Attempted</button>
+        <button class="exp-btn exp-btn-outline" onclick="expBr('not_attempted')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v8M5 7l3 3 3-3M3 13h10"/></svg>Not Attempted</button>
+        <button class="exp-btn exp-btn-warn" onclick="expBrCourier()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v8M5 7l3 3 3-3M3 13h10"/></svg>Courier Escalation Pack</button>
       </div>
       <div class="tabs">
-        <div class="tab active" id="tab-att" onclick="switchBreachTab('attempted')">Attempted <span id="att-cnt"></span></div>
-        <div class="tab" id="tab-natt" onclick="switchBreachTab('not_attempted')">Not Attempted <span id="natt-cnt"></span></div>
+        <div class="tab on" id="t-att" onclick="bTab('attempted')">Attempted <span id="att-n"></span></div>
+        <div class="tab" id="t-nat" onclick="bTab('not_attempted')">Not Attempted <span id="nat-n"></span></div>
       </div>
-      <div id="breach-table-wrap"></div>
-      <div class="pagination" id="breach-pag"></div>
+      <div class="card"><div class="tbl-wrap tall" id="br-tbl"></div></div>
+      <div class="pag" id="br-pag"></div>
     </div>
 
-    <!-- 5. NDR & RTO -->
-    <div class="section" id="sec-ndr">
-      <div class="page-title">NDR &amp; RTO</div>
-      <div class="page-sub">Failed delivery analysis and return tracking</div>
-      <div class="kpi-row" id="ndr-kpi-row"></div>
-      <div class="grid2">
-        <div class="card"><div class="card-title">NDR Reasons</div><div class="chart-box"><canvas id="ch-ndr-reasons"></canvas></div></div>
-        <div class="card"><div class="card-title">RTO % by Courier</div><div class="chart-box"><canvas id="ch-rto-courier"></canvas></div></div>
+    <!-- ── 5. NDR & RTO ── -->
+    <div class="section" id="sec-nd">
+      <div class="kpi3" id="nd-kpi"></div>
+      <div class="exp-bar">
+        <span class="exp-bar-label">⬇ Export</span>
+        <button class="exp-btn exp-btn-primary" onclick="expNdr()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v8M5 7l3 3 3-3M3 13h10"/></svg>NDR / Failed Deliveries</button>
+        <button class="exp-btn exp-btn-outline" onclick="expRto()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v8M5 7l3 3 3-3M3 13h10"/></svg>RTO Shipments</button>
+        <button class="exp-btn exp-btn-warn" onclick="expLost()"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v8M5 7l3 3 3-3M3 13h10"/></svg>Lost / Stuck 21+ Days</button>
       </div>
-      <div class="card"><div class="card-title">NDR Recovery Playbook</div><div class="playbook" id="ndr-playbook"></div></div>
-    </div>
-
-    <!-- 6. Geographic -->
-    <div class="section" id="sec-geo">
-      <div class="page-title">Geographic Analysis</div>
-      <div class="page-sub">State-level performance breakdown</div>
-      <div class="grid2">
-        <div class="card"><div class="card-title">Volume by State (Top 10)</div><div class="chart-box"><canvas id="ch-state-vol"></canvas></div></div>
-        <div class="card"><div class="card-title">RTO % by State (Top 10)</div><div class="chart-box"><canvas id="ch-state-rto"></canvas></div></div>
+      <div class="g2">
+        <div class="card"><div class="card-hd"><span class="card-title">NDR Reason Breakdown</span></div><div class="chart-h240"><canvas id="ch-ndr"></canvas></div></div>
+        <div class="card"><div class="card-hd"><span class="card-title">RTO % by Courier</span></div><div class="chart-h240"><canvas id="ch-rto"></canvas></div></div>
       </div>
-      <div class="card"><div class="card-title">State Performance Table</div><div class="tbl-wrap" id="geo-table"></div></div>
+      <div class="card"><div class="card-hd"><span class="card-title">Recovery Playbook</span></div><div class="pbook" id="pbook"></div></div>
     </div>
 
-    <!-- 7. Volume Trend -->
-    <div class="section" id="sec-trend">
-      <div class="page-title">Volume Trend</div>
-      <div class="page-sub">Daily shipment flow over time</div>
-      <div class="card" style="margin-bottom:16px"><div class="card-title">Daily Trend — Dispatched / Delivered / RTO / NDR</div><div class="chart-box tall"><canvas id="ch-trend-line"></canvas></div></div>
-      <div class="card"><div class="card-title">Daily Breakdown</div><div class="tbl-wrap" id="trend-table"></div></div>
+    <!-- ── 6. GEOGRAPHIC ── -->
+    <div class="section" id="sec-ge">
+      <div class="g2">
+        <div class="card"><div class="card-hd"><span class="card-title">Volume by State (Top 10)</span></div><div class="chart-h240"><canvas id="ch-gv"></canvas></div></div>
+        <div class="card"><div class="card-hd"><span class="card-title">RTO % by State (Top 10)</span></div><div class="chart-h240"><canvas id="ch-gr"></canvas></div></div>
+      </div>
+      <div class="card"><div class="card-hd"><span class="card-title">State Performance</span></div><div class="tbl-wrap tall" id="ge-tbl"></div></div>
     </div>
 
-    <!-- 8. Quantity & RTO -->
-    <div class="section" id="sec-qty">
-      <div class="page-title">Quantity &amp; RTO Analysis</div>
-      <div class="page-sub">Impact of order quantity on delivery outcomes and RTO rate</div>
-      <div class="kpi-row" id="qty-kpi-row"></div>
-      <div id="qty-no-data" style="display:none" class="insight">⚠️ Quantity data not found in the MIS file. Ensure 'Total Quantity' column is present.</div>
-      <div id="qty-content">
-        <div class="grid2">
-          <div class="card"><div class="card-title">RTO % by Quantity Bucket</div><div class="chart-box"><canvas id="ch-qty-rto"></canvas></div></div>
-          <div class="card"><div class="card-title">Delivery % by Quantity Bucket</div><div class="chart-box"><canvas id="ch-qty-del"></canvas></div></div>
+    <!-- ── 7. VOLUME TREND ── -->
+    <div class="section" id="sec-tr">
+      <div class="card" style="margin-bottom:14px"><div class="card-hd"><span class="card-title">Daily Shipment Flow</span></div><div class="chart-h300"><canvas id="ch-tl"></canvas></div></div>
+      <div class="card"><div class="card-hd"><span class="card-title">Daily Breakdown</span></div><div class="tbl-wrap tall" id="tr-tbl"></div></div>
+    </div>
+
+    <!-- ── 8. QTY & RTO ── -->
+    <div class="section" id="sec-qt">
+      <div class="kpi3" id="qt-kpi"></div>
+      <div id="qt-nodata" style="display:none" class="insight">⚠ Quantity data not found in MIS. Ensure 'Total Quantity' column is present.</div>
+      <div id="qt-body">
+        <div class="g2">
+          <div class="card"><div class="card-hd"><span class="card-title">RTO % by Order Quantity</span></div><div class="chart-h240"><canvas id="ch-qr"></canvas></div></div>
+          <div class="card"><div class="card-hd"><span class="card-title">Delivery % by Order Quantity</span></div><div class="chart-h240"><canvas id="ch-qd"></canvas></div></div>
         </div>
-        <div class="card" style="margin-bottom:16px">
-          <div class="card-title">Quantity × Outcome Table</div>
-          <div class="tbl-wrap" id="qty-table"></div>
-        </div>
-        <div class="grid2">
-          <div class="card">
-            <div class="card-title">EDD Breach → RTO Correlation</div>
-            <div class="chart-box"><canvas id="ch-edd-rto"></canvas></div>
-          </div>
-          <div class="card">
-            <div class="card-title">EDD Compliance Impact</div>
-            <div id="edd-rto-insight"></div>
-          </div>
+        <div class="card" style="margin-bottom:14px"><div class="card-hd"><span class="card-title">Quantity × Outcome Table</span></div><div class="tbl-wrap" id="qt-tbl"></div></div>
+        <div class="g2">
+          <div class="card"><div class="card-hd"><span class="card-title">EDD Compliance → RTO Impact</span></div><div class="chart-h240"><canvas id="ch-er"></canvas></div></div>
+          <div class="card"><div class="card-hd"><span class="card-title">Insight</span></div><div id="er-ins"></div></div>
         </div>
       </div>
     </div>
@@ -373,899 +433,616 @@ canvas{max-width:100%}
 </div><!-- /main -->
 
 <script>
-// ── Data injected by Python ─────────────────────────────────────────────────
+// ─── DATA ───────────────────────────────────────────────────────────────────
 const DATA = __PROSHIP_DATA__;
+const SHIP = DATA.shipments || [];
+const FO   = DATA.filter_options || {};
+const META = DATA.meta || {};
 
-// ── Courier config ───────────────────────────────────────────────────────────
-const COURIER_CFG = {
-  'Delhivery':   { color: '#C03042', bg: '#FDEAEC', short: 'DL' },
-  'Ekart':       { color: '#C07020', bg: '#FEF3E2', short: 'EK' },
-  'XpressBees':  { color: '#C56010', bg: '#FEF0E2', short: 'XB' },
-  'ATS':         { color: '#1E7070', bg: '#E2F4F4', short: 'AT' },
-  'Blue Dart':   { color: '#1B4FA8', bg: '#EAF0FA', short: 'BD' },
-  'Shadowfax':   { color: '#7B3DA8', bg: '#F0EAF8', short: 'SF' },
-  'Ecom Express':{ color: '#3A7A3A', bg: '#E8F5E8', short: 'EE' },
-  'DTDC':        { color: '#A83A1E', bg: '#F8EAE6', short: 'DT' },
+// ─── COURIER CONFIG ─────────────────────────────────────────────────────────
+const CC = {
+  'Delhivery':  {col:'#C03042',bg:'#FDEAEC',sh:'DL'},
+  'Ekart':      {col:'#BF6E10',bg:'#FEF3E0',sh:'EK'},
+  'XpressBees': {col:'#C55A18',bg:'#FDEEE4',sh:'XB'},
+  'ATS':        {col:'#1A7070',bg:'#E4F4F4',sh:'AT'},
+  'Blue Dart':  {col:'#1B4EA8',bg:'#EAF0FA',sh:'BD'},
+  'Shadowfax':  {col:'#7B3DA8',bg:'#F0EAF8',sh:'SF'},
 };
-
-function courierBadge(name, showName = true) {
-  const c = COURIER_CFG[name] || { color: '#7A6E63', bg: '#F0EDE8', short: (name||'?').slice(0,2).toUpperCase() };
-  const dot = `<span class="cb-dot" style="background:${c.color}">${c.short}</span>`;
-  return showName ? `<span class="cb">${dot} ${name}</span>` : `<span class="cb">${dot}</span>`;
+function cc(n){return CC[n]||{col:'#7A6E63',bg:'#F0EDE8',sh:(n||'?').slice(0,2).toUpperCase()}}
+function cbadge(n,full=true){
+  const c=cc(n);
+  const d=`<span class="cb-dot" style="background:${c.col}">${c.sh}</span>`;
+  return full?`<span class="cb">${d} ${n}</span>`:d;
 }
 
-// ── State & filters ─────────────────────────────────────────────────────────
-const SHIPMENTS   = DATA.shipments || [];
-const FOPTS       = DATA.filter_options || {};
-const META        = DATA.meta || {};
-const METRICS     = DATA.metrics || {};
+// ─── STATE ──────────────────────────────────────────────────────────────────
+const SEC_NAMES = ['ov','sc','sl','br','nd','ge','tr','qt'];
+const SEC_TITLES= ['Overview','Courier Scorecard','SLA & EDD','EDD Breach Split','NDR & RTO','Geographic','Volume Trend','Qty & RTO'];
+let curSec = 'ov', bTab_ = 'attempted', bPage = 1;
+const PAGE = 50;
+let _bRows = [];
+const CH = {};
+const F = {pf:'',pt:'',cs:[],ss:[],zs:[],rs:[],ps:[]};
 
-let currentSection = 'overview';
-let breachTab      = 'attempted';
-let breachPage     = 1;
-const PAGE_SIZE    = 50;
-const charts       = {};
-
-const filters = {
-  puFrom: '', puTo: '', eddFrom: '', eddTo: '',
-  couriers: [], states: [], zones: [], regions: [], pms: []
-};
-
-// ── Filter logic ─────────────────────────────────────────────────────────────
-function filterShipments() {
-  return SHIPMENTS.filter(s => {
-    if (filters.puFrom  && s.pd && s.pd < filters.puFrom)  return false;
-    if (filters.puTo    && s.pd && s.pd > filters.puTo)    return false;
-    if (filters.eddFrom && s.edd && s.edd < filters.eddFrom) return false;
-    if (filters.eddTo   && s.edd && s.edd > filters.eddTo)  return false;
-    if (filters.couriers.length && !filters.couriers.includes(s.c)) return false;
-    if (filters.states.length   && !filters.states.includes(s.dst))  return false;
-    if (filters.zones.length    && !filters.zones.includes(s.z))     return false;
-    if (filters.regions.length  && !filters.regions.includes(s.rgn)) return false;
-    if (filters.pms.length      && !filters.pms.includes(s.pm))      return false;
+// ─── FILTER ─────────────────────────────────────────────────────────────────
+function fs(){
+  return SHIP.filter(s=>{
+    if(F.pf && s.pd && s.pd<F.pf) return false;
+    if(F.pt && s.pd && s.pd>F.pt) return false;
+    if(F.cs.length && !F.cs.includes(s.c)) return false;
+    if(F.ss.length && !F.ss.includes(s.dst)) return false;
+    if(F.zs.length && !F.zs.includes(s.z)) return false;
+    if(F.rs.length && !F.rs.includes(s.rgn)) return false;
+    if(F.ps.length && !F.ps.includes(s.pm)) return false;
     return true;
   });
 }
 
-// ── Compute metrics from filtered shipments ──────────────────────────────────
-function compute(filtered) {
-  const n = filtered.length || 1;
-  const delivered   = filtered.filter(s => s.s === 'DELIVERED');
-  const rto         = filtered.filter(s => s.sg === 'rto');
-  const ofd         = filtered.filter(s => s.sg === 'ofd');
-  const ndr         = filtered.filter(s => s.sg === 'ndr');
-  const intransit   = filtered.filter(s => ['intransit','pending'].includes(s.sg));
-  const breached    = filtered.filter(s => s.br);
-  const attempted   = breached.filter(s => s.bt === 'attempted');
-  const not_att     = breached.filter(s => s.bt === 'not_attempted');
+// ─── COMPUTE ────────────────────────────────────────────────────────────────
+function cm(fl){
+  const n=fl.length||1;
+  const del=fl.filter(s=>s.s==='DELIVERED');
+  const rto=fl.filter(s=>s.sg==='rto');
+  const ofd=fl.filter(s=>s.sg==='ofd');
+  const ndr=fl.filter(s=>s.sg==='ndr');
+  const itr=fl.filter(s=>['intransit','pending'].includes(s.sg));
+  const br =fl.filter(s=>s.br);
+  const att=br.filter(s=>s.bt==='attempted');
+  const nat=br.filter(s=>s.bt==='not_attempted');
+  const d2v=del.map(s=>s.d2d).filter(v=>v!=null);
+  const otn=del.filter(s=>s.edd&&s.dd&&s.dd<=s.edd).length;
+  const otd=del.length?+(otn/del.length*100).toFixed(1):0;
+  const ad2=d2v.length?+(d2v.reduce((a,b)=>a+b,0)/d2v.length).toFixed(1):null;
 
-  const d2d_vals = delivered.map(s => s.d2d).filter(v => v != null);
-  const on_time  = delivered.filter(s => s.edd && s.dd && s.dd <= s.edd).length;
-  const otd_pct  = delivered.length ? +(on_time / delivered.length * 100).toFixed(1) : 0;
-  const avg_d2d  = d2d_vals.length ? +(d2d_vals.reduce((a,b)=>a+b,0)/d2d_vals.length).toFixed(1) : null;
+  // Courier map
+  const cm_={};
+  fl.forEach(s=>{if(!cm_[s.c])cm_[s.c]=[];cm_[s.c].push(s);});
+  const couriers=Object.entries(cm_).map(([nm,ar])=>{
+    const t=ar.length,d2=ar.map(s=>s.d2d).filter(v=>v!=null);
+    return{name:nm,vol:t,
+      del:+(ar.filter(s=>s.s==='DELIVERED').length/t*100).toFixed(1),
+      rto:+(ar.filter(s=>s.sg==='rto').length/t*100).toFixed(1),
+      ndr:+(ar.filter(s=>s.sg==='ndr').length/t*100).toFixed(1),
+      br :+(ar.filter(s=>s.br).length/t*100).toFixed(1),
+      ofd:+(ar.filter(s=>s.ofd).length/t*100).toFixed(1),
+      d2d:d2.length?+(d2.reduce((a,b)=>a+b,0)/d2.length).toFixed(1):null};
+  }).sort((a,b)=>b.vol-a.vol);
 
-  // Courier breakdown
-  const courier_map = {};
-  filtered.forEach(s => {
-    if (!courier_map[s.c]) courier_map[s.c] = [];
-    courier_map[s.c].push(s);
+  // Daily
+  const dm={};
+  fl.forEach(s=>{
+    if(!s.pd)return;
+    if(!dm[s.pd])dm[s.pd]={dt:s.pd,d:0,dl:0,r:0,n:0};
+    dm[s.pd].d++;
+    if(s.s==='DELIVERED'&&s.dd){if(!dm[s.dd])dm[s.dd]={dt:s.dd,d:0,dl:0,r:0,n:0};dm[s.dd].dl++;}
+    if(s.sg==='rto')dm[s.pd].r++;
+    if(s.sg==='ndr')dm[s.pd].n++;
   });
-  const couriers = Object.entries(courier_map).map(([name, arr]) => {
-    const ct = arr.length;
-    const cd = arr.filter(s => s.s==='DELIVERED').length;
-    const cr = arr.filter(s => s.sg==='rto').length;
-    const cn = arr.filter(s => s.sg==='ndr').length;
-    const cb = arr.filter(s => s.br).length;
-    const cd2 = arr.map(s=>s.d2d).filter(v=>v!=null);
-    return {
-      name, volume:ct,
-      del_pct: +(cd/ct*100).toFixed(1),
-      rto_pct: +(cr/ct*100).toFixed(1),
-      ndr_pct: +(cn/ct*100).toFixed(1),
-      breach_pct: +(cb/ct*100).toFixed(1),
-      avg_d2d: cd2.length ? +(cd2.reduce((a,b)=>a+b,0)/cd2.length).toFixed(1) : null,
-    };
-  }).sort((a,b)=>b.volume-a.volume);
-
-  // Daily trend
-  const daily_map = {};
-  filtered.forEach(s => {
-    if (!s.pd) return;
-    if (!daily_map[s.pd]) daily_map[s.pd] = {date:s.pd,dispatched:0,delivered:0,rto:0,ndr:0};
-    daily_map[s.pd].dispatched++;
-    if (s.s==='DELIVERED' && s.dd) {
-      if (!daily_map[s.dd]) daily_map[s.dd] = {date:s.dd,dispatched:0,delivered:0,rto:0,ndr:0};
-      daily_map[s.dd].delivered++;
-    }
-    if (s.sg==='rto') daily_map[s.pd].rto++;
-    if (s.sg==='ndr') daily_map[s.pd].ndr++;
-  });
-  const daily = Object.values(daily_map).sort((a,b)=>a.date.localeCompare(b.date)).slice(-60);
+  const daily=Object.values(dm).sort((a,b)=>a.dt.localeCompare(b.dt)).slice(-60);
 
   // Aging
-  const now = new Date(); now.setHours(0,0,0,0);
-  const ab = {'0-3d':0,'4-7d':0,'8-14d':0,'15-21d':0,'21+d':0};
-  filtered.filter(s=>['intransit','ofd','ndr','pending'].includes(s.sg)&&s.pd).forEach(s=>{
-    const age = Math.floor((now - new Date(s.pd)) / 86400000);
-    if (age<=3) ab['0-3d']++;
-    else if (age<=7) ab['4-7d']++;
-    else if (age<=14) ab['8-14d']++;
-    else if (age<=21) ab['15-21d']++;
-    else ab['21+d']++;
+  const now=new Date();now.setHours(0,0,0,0);
+  const ab={'0-3d':0,'4-7d':0,'8-14d':0,'15-21d':0,'21+d':0};
+  fl.filter(s=>['intransit','ofd','ndr','pending'].includes(s.sg)&&s.pd).forEach(s=>{
+    const a=Math.floor((now-new Date(s.pd))/86400000);
+    if(a<=3)ab['0-3d']++;else if(a<=7)ab['4-7d']++;else if(a<=14)ab['8-14d']++;else if(a<=21)ab['15-21d']++;else ab['21+d']++;
   });
-  const aging = Object.entries(ab).map(([l,c])=>({label:l,count:c}));
 
   // D2D dist
-  const db = {'1d':0,'2d':0,'3d':0,'4d':0,'5d':0,'6d':0,'7d':0,'8-10d':0,'10+d':0};
-  d2d_vals.forEach(v=>{
-    v=Math.round(v);
-    if(v===1)db['1d']++;else if(v===2)db['2d']++;else if(v===3)db['3d']++;
-    else if(v===4)db['4d']++;else if(v===5)db['5d']++;else if(v===6)db['6d']++;
-    else if(v===7)db['7d']++;else if(v<=10)db['8-10d']++;else db['10+d']++;
-  });
-  const d2d_dist = Object.entries(db).map(([l,c])=>({label:l,count:c}));
+  const db={'1d':0,'2d':0,'3d':0,'4d':0,'5d':0,'6d':0,'7d':0,'8-10d':0,'10+d':0};
+  d2v.forEach(v=>{v=Math.round(v);if(v===1)db['1d']++;else if(v===2)db['2d']++;else if(v===3)db['3d']++;else if(v===4)db['4d']++;else if(v===5)db['5d']++;else if(v===6)db['6d']++;else if(v===7)db['7d']++;else if(v<=10)db['8-10d']++;else db['10+d']++;});
 
-  // NDR reasons
-  const ndr_map = {};
-  ndr.forEach(s=>{ const r=s.ndr||'Unknown'; ndr_map[r]=(ndr_map[r]||0)+1; });
-  const ndr_reasons = Object.entries(ndr_map).sort((a,b)=>b[1]-a[1]).slice(0,8)
-    .map(([r,c])=>({reason:r,count:c}));
+  // NDR
+  const nm={};
+  ndr.forEach(s=>{const r=s.ndr||'Unknown';nm[r]=(nm[r]||0)+1;});
+  const ndrs=Object.entries(nm).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([r,c])=>({r,c}));
 
-  // Geographic
-  const geo_map = {};
-  filtered.forEach(s=>{
-    const st = s.dst||'Unknown';
-    if(!geo_map[st]) geo_map[st]={state:st,region:s.rgn||'Other',volume:0,delivered:0,rto:0,breached:0,d2ds:[]};
-    geo_map[st].volume++;
-    if(s.s==='DELIVERED'){geo_map[st].delivered++;if(s.d2d!=null)geo_map[st].d2ds.push(s.d2d);}
-    if(s.sg==='rto') geo_map[st].rto++;
-    if(s.br) geo_map[st].breached++;
-  });
-  const geo = Object.values(geo_map).filter(g=>g.volume>=2).map(g=>{
-    const dp=+(g.delivered/g.volume*100).toFixed(1);
-    const rp=+(g.rto/g.volume*100).toFixed(1);
-    return {...g,del_pct:dp,rto_pct:rp,edd_breaches:g.breached,
-      avg_d2d:g.d2ds.length?+(g.d2ds.reduce((a,b)=>a+b,0)/g.d2ds.length).toFixed(1):null,
-      assess: dp>=75&&rp<=8?'Good':dp>=55?'Watch':'Critical'};
-  }).sort((a,b)=>b.volume-a.volume);
+  // Zone
+  const zm={};fl.forEach(s=>{zm[s.z]=(zm[s.z]||0)+1;});
 
-  // Quantity
-  const qty_has = filtered.some(s=>s.qty!=null);
-  let qty_analysis = {has_data:false,buckets:[]};
-  if(qty_has){
-    const labels = ['1 item','2 items','3 items','4 items','5-6 items','7+ items'];
-    function qbkt(q){
-      if(q<=1) return '1 item'; if(q===2) return '2 items';
-      if(q===3) return '3 items'; if(q===4) return '4 items';
-      if(q<=6) return '5-6 items'; return '7+ items';
-    }
-    const qmap = {};
-    filtered.filter(s=>s.qty!=null).forEach(s=>{
-      const b=qbkt(s.qty);
-      if(!qmap[b]) qmap[b]={bucket:b,count:0,del:0,rto:0,ndr:0};
-      qmap[b].count++;
-      if(s.s==='DELIVERED') qmap[b].del++;
-      if(s.sg==='rto') qmap[b].rto++;
-      if(s.sg==='ndr') qmap[b].ndr++;
-    });
-    const buckets = labels.map(l=>qmap[l]).filter(Boolean).filter(b=>b.count>=2).map(b=>({
-      bucket:b.bucket,count:b.count,
-      del_pct:+(b.del/b.count*100).toFixed(1),
-      rto_pct:+(b.rto/b.count*100).toFixed(1),
-      ndr_pct:+(b.ndr/b.count*100).toFixed(1),
-    }));
-    const trend = buckets.length>=3
-      ? (buckets[buckets.length-1].rto_pct - buckets[0].rto_pct > 2 ? 'increases with quantity'
-         : buckets[buckets.length-1].rto_pct - buckets[0].rto_pct < -2 ? 'decreases with quantity'
-         : 'stays flat across quantities')
-      : 'insufficient data';
-    const avg_qty = filtered.filter(s=>s.qty!=null).reduce((a,s)=>a+s.qty,0)/filtered.filter(s=>s.qty!=null).length;
-    qty_analysis = {has_data:true,buckets,rto_trend:trend,avg_qty:+avg_qty.toFixed(2)};
+  // Geo
+  const gm={};
+  fl.forEach(s=>{const st=s.dst||'?';if(!gm[st])gm[st]={st,rg:s.rgn,v:0,dl:0,rt:0,br:0,d2:[]}; gm[st].v++;if(s.s==='DELIVERED'){gm[st].dl++;if(s.d2d!=null)gm[st].d2.push(s.d2d);}if(s.sg==='rto')gm[st].rt++;if(s.br)gm[st].br++;});
+  const geo=Object.values(gm).filter(g=>g.v>=2).map(g=>{
+    const dp=+(g.dl/g.v*100).toFixed(1),rp=+(g.rt/g.v*100).toFixed(1);
+    return{...g,dp,rp,d2a:g.d2.length?+(g.d2.reduce((a,b)=>a+b,0)/g.d2.length).toFixed(1):null,
+      as:dp>=75&&rp<=8?'Good':dp>=55?'Watch':'Critical'};
+  }).sort((a,b)=>b.v-a.v);
+
+  // Qty
+  let qa={has:false,bkts:[],trend:'',avg:null};
+  if(fl.some(s=>s.qty!=null)){
+    function qb(q){if(q<=1)return'1 item';if(q===2)return'2 items';if(q===3)return'3 items';if(q===4)return'4 items';if(q<=6)return'5-6 items';return'7+ items';}
+    const qm={};
+    fl.filter(s=>s.qty!=null).forEach(s=>{const b=qb(s.qty);if(!qm[b])qm[b]={b,t:0,dl:0,rt:0,nd:0};qm[b].t++;if(s.s==='DELIVERED')qm[b].dl++;if(s.sg==='rto')qm[b].rt++;if(s.sg==='ndr')qm[b].nd++;});
+    const bkts=['1 item','2 items','3 items','4 items','5-6 items','7+ items'].map(l=>qm[l]).filter(b=>b&&b.t>=2).map(b=>({b:b.b,t:b.t,dl:+(b.dl/b.t*100).toFixed(1),rt:+(b.rt/b.t*100).toFixed(1),nd:+(b.nd/b.t*100).toFixed(1)}));
+    const diff=bkts.length>=3?bkts[bkts.length-1].rt-bkts[0].rt:0;
+    const trend=diff>2?'increases with quantity':diff<-2?'decreases with quantity':'stays flat';
+    const qv=fl.filter(s=>s.qty!=null).map(s=>s.qty);
+    qa={has:true,bkts,trend,avg:+(qv.reduce((a,b)=>a+b,0)/qv.length).toFixed(2)};
   }
 
-  // EDD-RTO correlation
-  const comp = filtered.filter(s=>['DELIVERED','RTO_DELIVERED'].includes(s.s)&&s.edd);
-  let edd_rto = {has_data:false,groups:[],insight:''};
+  // EDD-RTO
+  let er={has:false,grps:[],ins:''};
+  const comp=fl.filter(s=>['DELIVERED','RTO_DELIVERED'].includes(s.s)&&s.edd);
   if(comp.length>10){
-    function grp(arr,lbl){
-      if(arr.length<2) return null;
-      const dr=arr.filter(s=>s.s==='DELIVERED').length;
-      const rr=arr.filter(s=>s.s==='RTO_DELIVERED').length;
-      return {label:lbl,count:arr.length,del_pct:+(dr/arr.length*100).toFixed(1),rto_pct:+(rr/arr.length*100).toFixed(1)};
-    }
-    const on_ofd  = comp.filter(s=>s.ofd&&s.ofd<=s.edd);
-    const late_ofd= comp.filter(s=>s.ofd&&s.ofd>s.edd);
-    const no_ofd  = comp.filter(s=>!s.ofd);
-    const groups  = [grp(on_ofd,'OFD On-Time'),grp(late_ofd,'OFD Late'),grp(no_ofd,'No OFD Attempt')].filter(Boolean);
-    const g0=groups.find(g=>g.label==='OFD On-Time');
-    const g2=groups.find(g=>g.label==='No OFD Attempt');
-    const insight = g0&&g2
-      ? `Shipments with no OFD attempt have ${Math.abs(g2.rto_pct-g0.rto_pct).toFixed(1)}% ${g2.rto_pct>g0.rto_pct?'higher':'lower'} RTO rate vs on-time OFD attempts.`
-      : '';
-    edd_rto = {has_data:true,groups,insight};
+    function gs(ar,l){if(ar.length<2)return null;return{l,n:ar.length,dl:+(ar.filter(s=>s.s==='DELIVERED').length/ar.length*100).toFixed(1),rt:+(ar.filter(s=>s.s==='RTO_DELIVERED').length/ar.length*100).toFixed(1)};}
+    const grps=[gs(comp.filter(s=>s.ofd&&s.ofd<=s.edd),'OFD On-Time'),gs(comp.filter(s=>s.ofd&&s.ofd>s.edd),'OFD Late'),gs(comp.filter(s=>!s.ofd),'No OFD')].filter(Boolean);
+    const g0=grps.find(g=>g.l==='OFD On-Time'),g2=grps.find(g=>g.l==='No OFD');
+    const ins=g0&&g2?`No-OFD shipments have ${Math.abs(g2.rt-g0.rt).toFixed(1)}% ${g2.rt>g0.rt?'higher':'lower'} RTO vs on-time OFD.`:'';
+    er={has:true,grps,ins};
   }
 
-  return {
-    total:filtered.length, delivered:delivered.length, rto:rto.length,
-    ofd:ofd.length, ndr:ndr.length, intransit:intransit.length,
-    breached:breached.length, attempted:attempted.length, not_att:not_att.length,
-    otd_pct, avg_d2d, d2d_vals,
-    couriers, daily, aging, d2d_dist, ndr_reasons, geo, qty_analysis, edd_rto,
-  };
+  return{n:fl.length,del:del.length,rto:rto.length,ofd:ofd.length,ndr:ndr.length,
+    itr:itr.length,br:br.length,att:att.length,nat:nat.length,otd,ad2,d2v,
+    couriers,daily,aging:ab,db,ndrs,zm,geo,qa,er};
 }
 
-// ── Chart helpers ─────────────────────────────────────────────────────────────
-const PALETTE = ['#8B3A52','#C07820','#1E7070','#C56010','#2A7A50','#5B8DD9','#A83A1E','#7B3DA8'];
+// ─── CHART HELPER ─────────────────────────────────────────────────────────
+const PAL=['#8C3A50','#BF6E10','#1A7070','#C55A18','#2A7A52','#5B8DD9','#A83A1E','#7B3DA8'];
+Chart.defaults.font.family="'Inter',sans-serif";
+Chart.defaults.color='#6B6560';
+function mk(id,cfg){
+  if(CH[id])CH[id].destroy();
+  const el=document.getElementById(id);
+  if(!el)return;
+  CH[id]=new Chart(el,cfg);
+}
+function bOpts(extra={}){return{responsive:true,maintainAspectRatio:false,
+  plugins:{legend:{display:false},tooltip:{backgroundColor:'#fff',titleColor:'#18150F',bodyColor:'#6B6560',borderColor:'rgba(0,0,0,.1)',borderWidth:1}},
+  scales:{x:{grid:{color:'rgba(0,0,0,.04)'},ticks:{color:'#A09890',font:{size:10}}},y:{grid:{color:'rgba(0,0,0,.04)'},ticks:{color:'#A09890',font:{size:10}}}},
+  ...extra};}
 
-function mkChart(id, cfg) {
-  if (charts[id]) { charts[id].destroy(); }
-  const el = document.getElementById(id);
-  if (!el) return;
-  charts[id] = new Chart(el, cfg);
-  return charts[id];
+// ─── STATUS PILL ─────────────────────────────────────────────────────────
+function sp(s){
+  const m={DELIVERED:['p-g','Delivered'],RTO_DELIVERED:['p-r','RTO Del'],RTO_INTRANSIT:['p-r','RTO Transit'],RTO_OFD:['p-r','RTO OFD'],OUT_FOR_DELIVERY:['p-o','OFD'],FAILED_DELIVERY:['p-a','Failed'],INTRANSIT:['p-b','In-Transit'],PICKED_UP:['p-b','Picked Up'],PICKUP_PENDING:['p-m','PU Pending'],AWB_REGISTERED:['p-m','Registered'],CANCELLED:['p-m','Cancelled']};
+  const[cl,lb]=m[s]||['p-m',s];
+  return `<span class="pill ${cl}">${lb}</span>`;
 }
 
-Chart.defaults.font.family = "'DM Sans', sans-serif";
-Chart.defaults.color       = '#7A6E63';
-
-function baseOpts(extra = {}) {
-  return {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: {} } },
-    scales: {
-      x: { grid: { color: 'rgba(0,0,0,.05)' }, ticks: { color: '#7A6E63' } },
-      y: { grid: { color: 'rgba(0,0,0,.05)' }, ticks: { color: '#7A6E63' } },
-    },
-    ...extra
-  };
-}
-
-// ── Status pill ───────────────────────────────────────────────────────────────
-function statusPill(s) {
-  const map = {
-    DELIVERED:        ['pill-green','Delivered'],
-    RTO_DELIVERED:    ['pill-red','RTO Delivered'],
-    RTO_INTRANSIT:    ['pill-red','RTO In-Transit'],
-    RTO_OFD:          ['pill-red','RTO OFD'],
-    OUT_FOR_DELIVERY: ['pill-orange','Out for Delivery'],
-    FAILED_DELIVERY:  ['pill-amber','Failed'],
-    INTRANSIT:        ['pill-blue','In-Transit'],
-    PICKED_UP:        ['pill-blue','Picked Up'],
-    PICKUP_PENDING:   ['pill-muted','Pickup Pending'],
-    AWB_REGISTERED:   ['pill-muted','Registered'],
-    CANCELLED:        ['pill-muted','Cancelled'],
-  };
-  const [cls, label] = map[s] || ['pill-muted', s];
-  return `<span class="pill ${cls}">${label}</span>`;
-}
-
-// ── Render section dispatcher ─────────────────────────────────────────────────
-function renderSection(name, m) {
-  const map = {
-    overview: renderOverview, courier: renderCourier, sla: renderSLA,
-    breach: renderBreach, ndr: renderNDR, geo: renderGeo,
-    trend: renderTrend, qty: renderQty,
-  };
-  if (map[name]) map[name](m);
-}
-
-// ── Section 1: Overview ───────────────────────────────────────────────────────
-function renderOverview(m) {
-  document.getElementById('kpi-row1').innerHTML = [
-    kpiCard('Total Shipments', m.total, '', 'accent'),
-    kpiCard('Delivered', m.delivered, `${+(m.delivered/m.total*100).toFixed(1)}% of total`, 'green'),
-    kpiCard('In Transit', m.intransit, 'active pipeline', 'teal'),
-    kpiCard('Out for Delivery', m.ofd, 'today\'s run', 'orange'),
-  ].join('');
-  document.getElementById('kpi-row2').innerHTML = [
-    kpiCard('RTO', m.rto, `${+(m.rto/m.total*100).toFixed(1)}% RTO rate`, 'red'),
-    kpiCard('NDR / Failed', m.ndr, `${+(m.ndr/m.total*100).toFixed(1)}% NDR rate`, 'amber'),
-    kpiCard('EDD Breached', m.breached, `${m.not_att} not attempted`, 'red'),
-    kpiCard('On-Time Delivery', `${m.otd_pct}%`, `${m.avg_d2d ? 'Avg D2D: '+m.avg_d2d+'d' : ''}`, 'green'),
-  ].join('');
+// ─── SECTION: OVERVIEW ───────────────────────────────────────────────────
+function rOv(m){
+  // Hero strip
+  const del_pct=+(m.del/m.n*100).toFixed(1);
+  document.getElementById('hs').innerHTML=`
+    <div class="hero-card featured">
+      <div class="hc-label">Total Shipments</div>
+      <div class="hc-val">${m.n.toLocaleString()}</div>
+      <div class="hc-sub">${META.locked||0} historical · ${META.active||0} active</div>
+      <span class="featured .hc-icon">📦</span>
+    </div>
+    <div class="hero-card">
+      <div class="hc-label">Delivered</div>
+      <div class="hc-val">${m.del.toLocaleString()}</div>
+      <span class="hc-badge up">▲ ${del_pct}%</span>
+    </div>
+    <div class="hero-card">
+      <div class="hc-label">In Transit</div>
+      <div class="hc-val">${m.itr.toLocaleString()}</div>
+      <div class="hc-sub">active pipeline</div>
+    </div>
+    <div class="hero-card">
+      <div class="hc-label">RTO</div>
+      <div class="hc-val">${m.rto}</div>
+      <span class="hc-badge ${+(m.rto/m.n*100)>10?'dn':'neu'}">${+(m.rto/m.n*100).toFixed(1)}%</span>
+    </div>
+    <div class="hero-card">
+      <div class="hc-label">On-Time Del.</div>
+      <div class="hc-val">${m.otd}%</div>
+      <span class="hc-badge ${m.otd>=80?'up':'warn'}">Avg ${m.ad2||'—'}d</span>
+    </div>
+    <div class="hero-card">
+      <div class="hc-label">EDD Breached</div>
+      <div class="hc-val">${m.br}</div>
+      <span class="hc-badge ${m.nat>10?'dn':'warn'}">${m.nat} not attempted</span>
+    </div>`;
 
   // Alerts
-  const alerts = [];
-  if (m.not_att > 20) alerts.push({type:'critical',msg:`<strong>${m.not_att} shipments</strong> EDD breached with NO OFD attempt — urgent courier escalation needed.`});
-  if (m.rto > m.total * 0.12) alerts.push({type:'critical',msg:`<strong>RTO rate ${+(m.rto/m.total*100).toFixed(1)}%</strong> exceeds 12% threshold.`});
-  if (m.ndr > m.total * 0.08) alerts.push({type:'warning',msg:`<strong>NDR rate ${+(m.ndr/m.total*100).toFixed(1)}%</strong> elevated. Review NDR reasons.`});
-  const aging21 = m.aging.find(a=>a.label==='21+d');
-  if (aging21 && aging21.count > 0) alerts.push({type:'warning',msg:`<strong>${aging21.count} shipments</strong> aging 21+ days — possible stuck/lost.`});
-  if (m.otd_pct < 60) alerts.push({type:'warning',msg:`<strong>On-time delivery ${m.otd_pct}%</strong> below 60% target.`});
-  if (!alerts.length) alerts.push({type:'info',msg:'All key metrics within acceptable thresholds.'});
-  document.getElementById('alerts-panel').innerHTML =
-    `<div class="alerts">${alerts.map(a=>`<div class="alert ${a.type}"><span class="alert-icon">${a.type==='critical'?'🚨':a.type==='warning'?'⚠️':'✅'}</span><span class="alert-text">${a.msg}</span></div>`).join('')}</div>`;
+  const als=[];
+  if(m.nat>20)als.push({t:'crit',msg:`<strong>${m.nat} shipments</strong> breached EDD with zero OFD attempt — escalate immediately.`});
+  if(m.rto>m.n*.12)als.push({t:'crit',msg:`<strong>RTO rate ${+(m.rto/m.n*100).toFixed(1)}%</strong> exceeds 12% threshold.`});
+  if(m.ndr>m.n*.08)als.push({t:'warn',msg:`<strong>NDR rate ${+(m.ndr/m.n*100).toFixed(1)}%</strong> elevated. Review reasons.`});
+  const aged=m.aging['21+d'];
+  if(aged>0)als.push({t:'warn',msg:`<strong>${aged} shipments</strong> aging 21+ days — possible stuck/lost.`});
+  if(!als.length)als.push({t:'ok',msg:'All key metrics within acceptable thresholds.'});
+  document.getElementById('al').innerHTML=als.map(a=>`<div class="alert ${a.t}"><span class="ai">${a.t==='crit'?'🚨':a.t==='warn'?'⚠️':'✅'}</span>${a.msg}</div>`).join('');
 
-  // Charts
-  const dailyLast30 = m.daily.slice(-30);
-  mkChart('ch-daily', {
-    type:'bar',
-    data:{
-      labels: dailyLast30.map(d=>d.date.slice(5)),
-      datasets:[
-        {label:'Dispatched',data:dailyLast30.map(d=>d.dispatched),backgroundColor:'rgba(139,58,82,.7)',borderRadius:3},
-        {label:'Delivered',data:dailyLast30.map(d=>d.delivered),backgroundColor:'rgba(42,122,80,.7)',borderRadius:3},
-      ]
-    },
-    options:{...baseOpts(),plugins:{legend:{display:true,position:'top',labels:{boxWidth:12,font:{size:11}}}}}
-  });
+  // Daily chart (last 30)
+  const d30=m.daily.slice(-30);
+  mk('ch-daily',{type:'bar',data:{labels:d30.map(d=>d.dt.slice(5)),
+    datasets:[
+      {label:'Dispatched',data:d30.map(d=>d.d),backgroundColor:'rgba(140,58,80,.75)',borderRadius:3,borderSkipped:false},
+      {label:'Delivered', data:d30.map(d=>d.dl),backgroundColor:'rgba(42,122,82,.75)',borderRadius:3,borderSkipped:false},
+    ]},
+    options:{...bOpts(),plugins:{legend:{display:true,position:'top',labels:{boxWidth:10,font:{size:10},padding:12}},tooltip:{backgroundColor:'#fff',titleColor:'#18150F',bodyColor:'#6B6560',borderColor:'rgba(0,0,0,.1)',borderWidth:1}}}});
 
-  mkChart('ch-aging', {
-    type:'bar',
-    data:{
-      labels: m.aging.map(a=>a.label),
-      datasets:[{
-        data: m.aging.map(a=>a.count),
-        backgroundColor: ['rgba(42,122,80,.7)','rgba(192,120,32,.7)','rgba(192,96,16,.7)','rgba(192,64,48,.7)','rgba(192,64,48,.9)'],
-        borderRadius:4,
-      }]
-    },
-    options: baseOpts()
-  });
+  // Courier vol donut
+  mk('ch-cvol',{type:'doughnut',data:{
+    labels:m.couriers.map(c=>c.name),
+    datasets:[{data:m.couriers.map(c=>c.vol),backgroundColor:m.couriers.map(c=>cc(c.name).col+'CC'),borderWidth:2,borderColor:'#fff',hoverBorderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'68%',
+      plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},padding:8}},
+        tooltip:{backgroundColor:'#fff',titleColor:'#18150F',bodyColor:'#6B6560',borderColor:'rgba(0,0,0,.1)',borderWidth:1}}}});
 
-  const vols = m.couriers.map(c=>c.volume);
-  mkChart('ch-courier-vol', {
-    type:'doughnut',
-    data:{
-      labels: m.couriers.map(c=>c.name),
-      datasets:[{
-        data: vols,
-        backgroundColor: m.couriers.map(c=>(COURIER_CFG[c.name]||{color:'#7A6E63'}).color+'CC'),
-        borderWidth:1, borderColor:'#fff',
-      }]
-    },
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:'right',labels:{font:{size:11},boxWidth:12}},
-        tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed} (${+(ctx.parsed/vols.reduce((a,b)=>a+b,0)*100).toFixed(1)}%)`}}}}
-  });
+  // Courier mini SLA
+  document.getElementById('courier-sla-mini').innerHTML=m.couriers.map(c=>`
+    <div class="mb">
+      <div class="mb-hd"><span>${cbadge(c.name)}</span><strong>${c.del}%</strong></div>
+      <div class="mb-tr"><div class="mb-fl" style="width:${c.del}%;background:${cc(c.name).col}"></div></div>
+    </div>`).join('');
 
-  document.getElementById('sla-summary').innerHTML = `
-    <div class="mbar-wrap">
-      <div class="mbar-label"><span>On-Time Delivery</span><strong>${m.otd_pct}%</strong></div>
-      <div class="mbar-track"><div class="mbar-fill" style="width:${Math.min(m.otd_pct,100)}%;background:var(--green)"></div></div>
-    </div>
-    <div class="mbar-wrap">
-      <div class="mbar-label"><span>EDD Breach Rate</span><strong>${+(m.breached/(m.total||1)*100).toFixed(1)}%</strong></div>
-      <div class="mbar-track"><div class="mbar-fill" style="width:${Math.min(m.breached/(m.total||1)*100,100)}%;background:var(--red)"></div></div>
-    </div>
-    <div class="mbar-wrap">
-      <div class="mbar-label"><span>Delivery Rate</span><strong>${+(m.delivered/(m.total||1)*100).toFixed(1)}%</strong></div>
-      <div class="mbar-track"><div class="mbar-fill" style="width:${Math.min(m.delivered/(m.total||1)*100,100)}%;background:var(--accent)"></div></div>
-    </div>
-    <div class="mbar-wrap">
-      <div class="mbar-label"><span>RTO Rate</span><strong>${+(m.rto/(m.total||1)*100).toFixed(1)}%</strong></div>
-      <div class="mbar-track"><div class="mbar-fill" style="width:${Math.min(m.rto/(m.total||1)*100,100)}%;background:var(--amber)"></div></div>
-    </div>
-    <div style="margin-top:12px;font-size:12px;color:var(--muted);line-height:2">
-      Avg D2D: <strong>${m.avg_d2d ? m.avg_d2d+'d' : '—'}</strong><br>
-      Attempted breaches: <strong>${m.attempted}</strong><br>
-      Not-attempted breaches: <strong>${m.not_att}</strong>
-    </div>`;
+  // Aging
+  const ak=Object.keys(m.aging),av=Object.values(m.aging);
+  mk('ch-age',{type:'bar',data:{labels:ak,datasets:[{data:av,backgroundColor:['rgba(42,122,82,.7)','rgba(191,110,16,.7)','rgba(197,90,24,.7)','rgba(192,56,64,.7)','rgba(192,56,64,.9)'],borderRadius:4}]},options:bOpts()});
+
+  // Perf snapshot
+  document.getElementById('perf-snap').innerHTML=`
+    <div class="mb"><div class="mb-hd"><span>Delivery Rate</span><strong>${+(m.del/m.n*100).toFixed(1)}%</strong></div><div class="mb-tr"><div class="mb-fl" style="width:${+(m.del/m.n*100)}%;background:var(--green)"></div></div></div>
+    <div class="mb"><div class="mb-hd"><span>On-Time Delivery</span><strong>${m.otd}%</strong></div><div class="mb-tr"><div class="mb-fl" style="width:${m.otd}%;background:var(--teal)"></div></div></div>
+    <div class="mb"><div class="mb-hd"><span>EDD Breach Rate</span><strong>${+(m.br/m.n*100).toFixed(1)}%</strong></div><div class="mb-tr"><div class="mb-fl" style="width:${Math.min(m.br/m.n*100,100)}%;background:var(--red)"></div></div></div>
+    <div class="mb"><div class="mb-hd"><span>RTO Rate</span><strong>${+(m.rto/m.n*100).toFixed(1)}%</strong></div><div class="mb-tr"><div class="mb-fl" style="width:${Math.min(m.rto/m.n*100,50)*2}%;background:var(--amber)"></div></div></div>
+    <div class="mb"><div class="mb-hd"><span>NDR Rate</span><strong>${+(m.ndr/m.n*100).toFixed(1)}%</strong></div><div class="mb-tr"><div class="mb-fl" style="width:${Math.min(m.ndr/m.n*100,25)*4}%;background:var(--orange)"></div></div></div>`;
+
+  // Zone donut
+  mk('ch-zone',{type:'doughnut',data:{
+    labels:Object.keys(m.zm),
+    datasets:[{data:Object.values(m.zm),backgroundColor:PAL.slice(0,Object.keys(m.zm).length).map(c=>c+'CC'),borderWidth:2,borderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'65%',
+      plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},padding:8}},
+        tooltip:{backgroundColor:'#fff',titleColor:'#18150F',bodyColor:'#6B6560',borderColor:'rgba(0,0,0,.1)',borderWidth:1}}}});
 }
 
-function kpiCard(label, val, sub, cls) {
-  return `<div class="kpi ${cls}">
-    <div class="kpi-label">${label}</div>
-    <div class="kpi-val">${val}</div>
-    ${sub?`<div class="kpi-sub">${sub}</div>`:''}
-  </div>`;
+// ─── SECTION: COURIER SCORECARD ──────────────────────────────────────────
+function rSc(m){
+  document.getElementById('sc-kpi').innerHTML=m.couriers.slice(0,4).map((c,i)=>`
+    <div class="kpi ${['p','g','a','t'][i]}">
+      <div class="kpi-lbl">${cbadge(c.name)}</div>
+      <div class="kpi-v">${c.del}%</div>
+      <div class="kpi-s">${c.vol} shipments · Avg D2D ${c.d2d||'—'}d</div>
+    </div>`).join('');
+  document.getElementById('sc-cards').innerHTML=m.couriers.map(c=>`
+    <div class="sc-card">
+      <div class="sc-top">${cbadge(c.name)}<span class="sc-vol">${c.vol} shipments</span></div>
+      <div class="mb"><div class="mb-hd"><span>Delivery</span><strong>${c.del}%</strong></div><div class="mb-tr"><div class="mb-fl" style="width:${c.del}%;background:var(--green)"></div></div></div>
+      <div class="mb"><div class="mb-hd"><span>RTO</span><strong>${c.rto}%</strong></div><div class="mb-tr"><div class="mb-fl" style="width:${Math.min(c.rto,30)*3.33}%;background:var(--red)"></div></div></div>
+      <div class="mb"><div class="mb-hd"><span>NDR</span><strong>${c.ndr}%</strong></div><div class="mb-tr"><div class="mb-fl" style="width:${Math.min(c.ndr,20)*5}%;background:var(--amber)"></div></div></div>
+      <div class="mb"><div class="mb-hd"><span>EDD Breach</span><strong>${c.br}%</strong></div><div class="mb-tr"><div class="mb-fl" style="width:${Math.min(c.br,25)*4}%;background:var(--orange)"></div></div></div>
+      <div style="margin-top:8px;font-size:10px;color:var(--sub)">Avg D2D: <strong style="color:var(--text)">${c.d2d||'—'}d</strong> &nbsp; OFD 1st: <strong style="color:var(--text)">${c.ofd||'—'}%</strong></div>
+    </div>`).join('');
+  const t4=m.couriers.slice(0,4);
+  mk('ch-radar',{type:'radar',data:{
+    labels:['Delivery %','OFD 1st%','100-RTO','100-NDR','100-Breach'],
+    datasets:t4.map((c,i)=>({label:c.name,data:[c.del,c.ofd,100-c.rto,100-c.ndr,100-c.br],borderColor:PAL[i],backgroundColor:PAL[i]+'18',borderWidth:2,pointRadius:3}))},
+    options:{responsive:true,maintainAspectRatio:false,scales:{r:{ticks:{display:false},pointLabels:{font:{size:10}},min:0,max:100}},
+      plugins:{legend:{display:true,position:'top',labels:{boxWidth:10,font:{size:10},padding:10}},
+        tooltip:{backgroundColor:'#fff',titleColor:'#18150F',bodyColor:'#6B6560',borderColor:'rgba(0,0,0,.1)',borderWidth:1}}}});
+  const dv=m.couriers.filter(c=>c.d2d!=null);
+  mk('ch-d2dc',{type:'bar',data:{labels:dv.map(c=>c.name),datasets:[{data:dv.map(c=>c.d2d),backgroundColor:dv.map(c=>cc(c.name).col+'CC'),borderRadius:5}]},options:{...bOpts({indexAxis:'y'})}});
 }
 
-// ── Section 2: Courier Scorecard ──────────────────────────────────────────────
-function renderCourier(m) {
-  document.getElementById('courier-cards').innerHTML = m.couriers.slice(0,4).map(c => {
-    const cfg = COURIER_CFG[c.name] || {color:'#7A6E63',bg:'#F0EDE8'};
-    return `<div class="card">
-      <div class="card-title">${courierBadge(c.name)} <span style="font-weight:400;color:var(--muted);font-size:12px">${c.volume} shipments</span></div>
-      ${mbar('Delivery Rate', c.del_pct, 100, cfg.color)}
-      ${mbar('RTO Rate', c.rto_pct, 30, '#C04030')}
-      ${mbar('NDR Rate', c.ndr_pct, 20, '#C07820')}
-      ${mbar('EDD Breach', c.breach_pct, 30, '#C56010')}
-      <div style="margin-top:8px;font-size:11px;color:var(--muted)">
-        Avg D2D: <strong style="color:var(--text)">${c.avg_d2d?c.avg_d2d+'d':'—'}</strong> &nbsp;
-        OFD 1st: <strong style="color:var(--text)">${c.ofd1_pct||'—'}%</strong>
-      </div>
-    </div>`;
-  }).join('');
-
-  const top4 = m.couriers.slice(0,4);
-  mkChart('ch-radar', {
-    type:'radar',
-    data:{
-      labels:['Delivery %','OFD 1st %',`100-RTO`,'100-NDR','100-Breach'],
-      datasets: top4.map((c,i)=>({
-        label: c.name,
-        data:[c.del_pct, c.ofd1_pct||0, 100-c.rto_pct, 100-c.ndr_pct, 100-c.breach_pct],
-        borderColor: PALETTE[i], backgroundColor: PALETTE[i]+'22', borderWidth:2, pointRadius:3,
-      }))
-    },
-    options:{responsive:true,maintainAspectRatio:false,
-      scales:{r:{ticks:{display:false,stepSize:20},pointLabels:{font:{size:11}},min:0,max:100}},
-      plugins:{legend:{display:true,position:'top',labels:{font:{size:11},boxWidth:10}}}}
-  });
-
-  mkChart('ch-breach-bar', {
-    type:'bar',
-    data:{
-      labels: m.couriers.map(c=>c.name),
-      datasets:[{
-        data: m.couriers.map(c=>c.breach_pct),
-        backgroundColor: m.couriers.map(c=>(COURIER_CFG[c.name]||{color:'#7A6E63'}).color+'BB'),
-        borderRadius:5,
-      }]
-    },
-    options:{...baseOpts({indexAxis:'y'})}
-  });
-
-  const d2d_data = m.couriers.filter(c=>c.avg_d2d!=null);
-  mkChart('ch-d2d-courier', {
-    type:'bar',
-    data:{
-      labels: d2d_data.map(c=>c.name),
-      datasets:[{
-        data: d2d_data.map(c=>c.avg_d2d),
-        backgroundColor: d2d_data.map(c=>(COURIER_CFG[c.name]||{color:'#7A6E63'}).color+'BB'),
-        borderRadius:5,
-      }]
-    },
-    options:{...baseOpts({indexAxis:'y'})}
-  });
-}
-
-function mbar(label, val, max, color) {
-  const pct = Math.min(val/max*100, 100);
-  return `<div class="mbar-wrap">
-    <div class="mbar-label"><span>${label}</span><strong>${val}%</strong></div>
-    <div class="mbar-track"><div class="mbar-fill" style="width:${pct}%;background:${color}"></div></div>
-  </div>`;
-}
-
-// ── Section 3: SLA & EDD ──────────────────────────────────────────────────────
-function renderSLA(m) {
-  document.getElementById('sla-kpi-row').innerHTML = [
-    kpiCard('On-Time Delivery', `${m.otd_pct}%`, 'OFD on/before EDD', 'green'),
-    kpiCard('EDD Breach Rate', `${+(m.breached/(m.total||1)*100).toFixed(1)}%`, `${m.breached} orders`, 'red'),
-    kpiCard('Attempted Breaches', m.attempted, 'OFD after EDD', 'amber'),
-    kpiCard('Not Attempted', m.not_att, 'zero OFD — critical', 'red'),
-    kpiCard('Avg D2D', m.avg_d2d ? m.avg_d2d+'d' : '—', 'delivered orders', 'teal'),
-  ].join('');
-
-  mkChart('ch-d2d-dist', {
-    type:'bar',
-    data:{
-      labels: m.d2d_dist.map(d=>d.label),
-      datasets:[{data:m.d2d_dist.map(d=>d.count),backgroundColor:'rgba(139,58,82,.7)',borderRadius:4}]
-    },
-    options:baseOpts()
-  });
-
-  mkChart('ch-edd-courier', {
-    type:'bar',
-    data:{
-      labels: m.couriers.map(c=>c.name),
-      datasets:[{
-        data: m.couriers.map(c=>c.breach_pct),
-        backgroundColor: m.couriers.map(c=>(COURIER_CFG[c.name]||{color:'#7A6E63'}).color+'AA'),
-        borderRadius:4,
-      }]
-    },
-    options:{...baseOpts({indexAxis:'y'})}
-  });
-
-  // Delay table (by courier)
-  document.getElementById('delay-table').innerHTML = `<table>
-    <thead><tr><th>Courier</th><th>EDD Breach %</th><th>Not Attempted</th><th>Avg D2D</th><th>Status</th></tr></thead>
-    <tbody>${m.couriers.map(c=>`
-      <tr>
-        <td>${courierBadge(c.name)}</td>
-        <td class="mono">${c.breach_pct}%</td>
-        <td class="mono">${c.breach_pct > 0 ? '—' : '0'}</td>
-        <td class="mono">${c.avg_d2d ? c.avg_d2d+'d' : '—'}</td>
-        <td>${c.breach_pct>15?`<span class="assess-critical">Critical</span>`:c.breach_pct>8?`<span class="assess-watch">Watch</span>`:`<span class="assess-good">Good</span>`}</td>
-      </tr>`).join('')}
+// ─── SECTION: SLA & EDD ─────────────────────────────────────────────────
+function rSl(m){
+  document.getElementById('sl-kpi').innerHTML=`
+    <div class="kpi g"><div class="kpi-lbl">On-Time Delivery</div><div class="kpi-v">${m.otd}%</div></div>
+    <div class="kpi r"><div class="kpi-lbl">EDD Breach Rate</div><div class="kpi-v">${+(m.br/m.n*100).toFixed(1)}%</div><div class="kpi-s">${m.br} orders</div></div>
+    <div class="kpi a"><div class="kpi-lbl">Attempted Breaches</div><div class="kpi-v">${m.att}</div><div class="kpi-s">OFD after EDD</div></div>
+    <div class="kpi r"><div class="kpi-lbl">Not Attempted</div><div class="kpi-v">${m.nat}</div><div class="kpi-s">zero OFD</div></div>
+    <div class="kpi t"><div class="kpi-lbl">Avg D2D</div><div class="kpi-v">${m.ad2||'—'}d</div></div>`;
+  mk('ch-d2d',{type:'bar',data:{labels:Object.keys(m.db),datasets:[{data:Object.values(m.db),backgroundColor:'rgba(140,58,80,.75)',borderRadius:4}]},options:bOpts()});
+  mk('ch-eddc',{type:'bar',data:{labels:m.couriers.map(c=>c.name),datasets:[{data:m.couriers.map(c=>c.br),backgroundColor:m.couriers.map(c=>cc(c.name).col+'AA'),borderRadius:4}]},options:{...bOpts({indexAxis:'y'})}});
+  document.getElementById('sl-tbl').innerHTML=`<table><thead><tr><th>Courier</th><th>Vol</th><th>Del%</th><th>RTO%</th><th>NDR%</th><th>Breach%</th><th>Avg D2D</th><th>Status</th></tr></thead><tbody>
+    ${m.couriers.map(c=>`<tr><td>${cbadge(c.name)}</td><td class="mono">${c.vol}</td><td class="mono">${c.del}%</td><td class="mono">${c.rto}%</td><td class="mono">${c.ndr}%</td><td class="mono">${c.br}%</td><td class="mono">${c.d2d||'—'}d</td><td><span class="${c.br>15?'critical':c.br>8?'watch':'good'}">${c.br>15?'Critical':c.br>8?'Watch':'Good'}</span></td></tr>`).join('')}
     </tbody></table>`;
 }
 
-// ── Section 4: EDD Breach Split ───────────────────────────────────────────────
-let _breachFiltered = [];
-
-function renderBreach(m) {
-  if (!m) m = compute(filterShipments());
-  const breached = filterShipments().filter(s=>s.br);
-
-  document.getElementById('breach-kpi-row').innerHTML = [
-    kpiCard('Total Breached', m.breached, 'active EDD breaches', 'red'),
-    kpiCard('Attempted', m.attempted, 'OFD was made late', 'amber'),
-    kpiCard('Not Attempted', m.not_att, 'zero OFD — escalate', 'red'),
-    kpiCard('Delhivery Share', `${m.couriers.find(c=>c.name==='Delhivery')?+(m.couriers.find(c=>c.name==='Delhivery').volume/m.total*100).toFixed(0)+'%':'—'}`, 'of total volume', 'accent'),
-  ].join('');
-
-  // Populate local filters
-  const bCouriers = [...new Set(breached.map(s=>s.c))].sort();
-  const bStates   = [...new Set(breached.map(s=>s.dst))].sort();
-  const bStatuses = [...new Set(breached.map(s=>s.s))].sort();
-  fillSelect('bf-courier', bCouriers);
-  fillSelect('bf-state', bStates);
-  fillSelect('bf-status', bStatuses);
-
-  applyBreachFilter(breached);
+// ─── SECTION: EDD BREACH SPLIT ────────────────────────────────────────────
+function rBr(m){
+  if(!m)m=cm(fs());
+  const br=fs().filter(s=>s.br);
+  document.getElementById('br-kpi').innerHTML=`
+    <div class="kpi r"><div class="kpi-lbl">Total Breached</div><div class="kpi-v">${m.br}</div></div>
+    <div class="kpi a"><div class="kpi-lbl">Attempted</div><div class="kpi-v">${m.att}</div><div class="kpi-s">late OFD</div></div>
+    <div class="kpi r"><div class="kpi-lbl">Not Attempted</div><div class="kpi-v">${m.nat}</div><div class="kpi-s">no OFD at all</div></div>
+    <div class="kpi p"><div class="kpi-lbl">Breach Rate</div><div class="kpi-v">${+(m.br/m.n*100).toFixed(1)}%</div></div>`;
+  const bc=[...new Set(br.map(s=>s.c))].sort();
+  const bs=[...new Set(br.map(s=>s.dst))].sort();
+  const bst=[...new Set(br.map(s=>s.s))].sort();
+  fsel('bf-c',bc);fsel('bf-s',bs);fsel('bf-st',bst);
+  applyBr(br);
 }
-
-function applyBreachFilter(breached) {
-  const cFilter = document.getElementById('bf-courier').value;
-  const sFilter = document.getElementById('bf-state').value;
-  const stFilter = document.getElementById('bf-status').value;
-  const search  = (document.getElementById('bf-search').value||'').toLowerCase();
-
-  _breachFiltered = breached.filter(s => {
-    if (cFilter && s.c !== cFilter) return false;
-    if (sFilter && s.dst !== sFilter) return false;
-    if (stFilter && s.s !== stFilter) return false;
-    if (search && !s.awb.toLowerCase().includes(search) && !s.dc.toLowerCase().includes(search)) return false;
+function applyBr(br){
+  const cf=document.getElementById('bf-c').value,sf=document.getElementById('bf-s').value,
+    stf=document.getElementById('bf-st').value,q=(document.getElementById('bf-q').value||'').toLowerCase();
+  _bRows=br.filter(s=>{
+    if(cf&&s.c!==cf)return false;
+    if(sf&&s.dst!==sf)return false;
+    if(stf&&s.s!==stf)return false;
+    if(q&&!s.awb.toLowerCase().includes(q)&&!s.dc.toLowerCase().includes(q))return false;
     return true;
   });
-
-  const att  = _breachFiltered.filter(s=>s.bt==='attempted');
-  const natt = _breachFiltered.filter(s=>s.bt==='not_attempted');
-  document.getElementById('att-cnt').textContent  = `(${att.length})`;
-  document.getElementById('natt-cnt').textContent = `(${natt.length})`;
-  breachPage = 1;
-  renderBreachTable();
+  const att=_bRows.filter(s=>s.bt==='attempted'),nat=_bRows.filter(s=>s.bt==='not_attempted');
+  document.getElementById('att-n').textContent=`(${att.length})`;
+  document.getElementById('nat-n').textContent=`(${nat.length})`;
+  bPage=1;rBrTbl();
 }
-
-function switchBreachTab(t) {
-  breachTab = t;
-  breachPage = 1;
-  document.getElementById('tab-att').classList.toggle('active', t==='attempted');
-  document.getElementById('tab-natt').classList.toggle('active', t==='not_attempted');
-  renderBreachTable();
+function bTab(t){
+  bTab_=t;bPage=1;
+  document.getElementById('t-att').classList.toggle('on',t==='attempted');
+  document.getElementById('t-nat').classList.toggle('on',t==='not_attempted');
+  rBrTbl();
 }
-
-function renderBreachTable() {
-  const rows = _breachFiltered.filter(s=>s.bt===breachTab);
-  const total = rows.length;
-  const pages = Math.ceil(total/PAGE_SIZE);
-  const start = (breachPage-1)*PAGE_SIZE;
-  const page  = rows.slice(start, start+PAGE_SIZE);
-
-  let html = '';
-  if (breachTab === 'attempted') {
-    html = `<table><thead><tr><th>AWB</th><th>Courier</th><th>State</th><th>City</th><th>Status</th><th>EDD</th><th>OFD Date</th><th>NDR Reason</th></tr></thead>
-      <tbody>${page.map(s=>`<tr>
-        <td class="mono">${s.awb}</td>
-        <td>${courierBadge(s.c)}</td>
-        <td>${s.dst}</td><td>${s.dc}</td>
-        <td>${statusPill(s.s)}</td>
-        <td class="mono">${s.edd||'—'}</td>
-        <td class="mono" style="color:var(--red)">${s.ofd||'—'}</td>
-        <td style="color:var(--muted);font-size:11px">${s.ndr||'—'}</td>
-      </tr>`).join('')}
+function rBrTbl(){
+  const rows=_bRows.filter(s=>s.bt===bTab_);
+  const tot=rows.length,pgs=Math.ceil(tot/PAGE),st=(bPage-1)*PAGE,pg=rows.slice(st,st+PAGE);
+  let html='';
+  if(bTab_==='attempted'){
+    html=`<table><thead><tr><th>AWB</th><th>Courier</th><th>State</th><th>City</th><th>Status</th><th>EDD</th><th>OFD Date</th><th>NDR Reason</th></tr></thead><tbody>
+      ${pg.map(s=>`<tr><td class="mono">${s.awb}</td><td>${cbadge(s.c)}</td><td>${s.dst}</td><td>${s.dc}</td><td>${sp(s.s)}</td><td class="mono">${s.edd||'—'}</td><td class="mono" style="color:var(--red)">${s.ofd||'—'}</td><td style="color:var(--sub);font-size:11px">${s.ndr||'—'}</td></tr>`).join('')}
       </tbody></table>`;
-  } else {
-    html = `<table><thead><tr><th>AWB</th><th>Courier</th><th>State</th><th>City</th><th>Status</th><th>EDD</th><th>Days Overdue</th></tr></thead>
-      <tbody>${page.map(s=>`<tr>
-        <td class="mono">${s.awb}</td>
-        <td>${courierBadge(s.c)}</td>
-        <td>${s.dst}</td><td>${s.dc}</td>
-        <td>${statusPill(s.s)}</td>
-        <td class="mono">${s.edd||'—'}</td>
-        <td class="mono" style="color:var(--red);font-weight:600">${s.dov!=null?Math.round(s.dov)+'d':'—'}</td>
-      </tr>`).join('')}
+  }else{
+    html=`<table><thead><tr><th>AWB</th><th>Courier</th><th>State</th><th>City</th><th>Status</th><th>EDD</th><th>Days Overdue</th></tr></thead><tbody>
+      ${pg.map(s=>`<tr><td class="mono">${s.awb}</td><td>${cbadge(s.c)}</td><td>${s.dst}</td><td>${s.dc}</td><td>${sp(s.s)}</td><td class="mono">${s.edd||'—'}</td><td class="mono" style="color:var(--red);font-weight:700">${s.dov!=null?Math.round(s.dov)+'d':'—'}</td></tr>`).join('')}
       </tbody></table>`;
   }
+  document.getElementById('br-tbl').innerHTML=html;
+  document.getElementById('br-pag').innerHTML=pgs>1?`Showing ${st+1}–${Math.min(st+PAGE,tot)} of ${tot} &nbsp;<button class="pag-btn" onclick="bPage=Math.max(1,bPage-1);rBrTbl()" ${bPage===1?'disabled':''}>← Prev</button> Page ${bPage}/${pgs} <button class="pag-btn" onclick="bPage=Math.min(${pgs},bPage+1);rBrTbl()" ${bPage===pgs?'disabled':''}>Next →</button>`:tot+' records';
+}
+function fsel(id,opts){const e=document.getElementById(id),cv=e.value;e.innerHTML=`<option value="">All</option>`+opts.map(o=>`<option value="${o}"${o===cv?'selected':''}>${o}</option>`).join('');}
 
-  document.getElementById('breach-table-wrap').innerHTML = html;
-  document.getElementById('breach-pag').innerHTML = pages > 1
-    ? `Showing ${start+1}–${Math.min(start+PAGE_SIZE,total)} of ${total} &nbsp;
-       <button class="page-btn" onclick="breachPage=Math.max(1,breachPage-1);renderBreachTable()" ${breachPage===1?'disabled':''}>← Prev</button>
-       <span>Page ${breachPage}/${pages}</span>
-       <button class="page-btn" onclick="breachPage=Math.min(${pages},breachPage+1);renderBreachTable()" ${breachPage===pages?'disabled':''}>Next →</button>`
-    : `${total} records`;
+// ─── SECTION: NDR & RTO ──────────────────────────────────────────────────
+const PB_MAP={'Customer not available':'Schedule callback within 2h. Send SMS with delivery window.','Address not found':'Verify address. Provide landmark. Escalate after 2nd fail.','Refused delivery':'Verify COD amount mismatch. Initiate RTO if confirmed.','Out of delivery area':'Reassign to local partner. Consider 3rd-party last-mile.','Customer requested reschedule':'Update delivery slot via SMS/WhatsApp confirmation.'};
+function rNd(m){
+  document.getElementById('nd-kpi').innerHTML=`
+    <div class="kpi a"><div class="kpi-lbl">NDR / Failed</div><div class="kpi-v">${m.ndr}</div><div class="kpi-s">${+(m.ndr/m.n*100).toFixed(1)}% rate</div></div>
+    <div class="kpi r"><div class="kpi-lbl">RTO Total</div><div class="kpi-v">${m.rto}</div><div class="kpi-s">${+(m.rto/m.n*100).toFixed(1)}% return</div></div>
+    <div class="kpi o"><div class="kpi-lbl">Est. COD Loss</div><div class="kpi-v">₹${(m.rto*250).toLocaleString()}</div><div class="kpi-s">at ₹250/shipment</div></div>`;
+  mk('ch-ndr',{type:'bar',data:{labels:m.ndrs.map(r=>r.r.length>22?r.r.slice(0,22)+'…':r.r),datasets:[{data:m.ndrs.map(r=>r.c),backgroundColor:'rgba(183,112,32,.8)',borderRadius:4}]},options:{...bOpts({indexAxis:'y'})}});
+  mk('ch-rto',{type:'bar',data:{labels:m.couriers.map(c=>c.name),datasets:[{data:m.couriers.map(c=>c.rto),backgroundColor:m.couriers.map(c=>cc(c.name).col+'AA'),borderRadius:4}]},options:{...bOpts({indexAxis:'y'})}});
+  document.getElementById('pbook').innerHTML=m.ndrs.slice(0,6).map(r=>`<div class="pb-card"><div class="pb-r">${r.r||'Unknown'} <span style="color:var(--sub);font-weight:400">(${r.c})</span></div><div class="pb-a">${PB_MAP[r.r]||'Follow standard NDR resolution. Update status within 24h.'}</div></div>`).join('');
 }
 
-function fillSelect(id, opts) {
-  const el = document.getElementById(id);
-  const cur = el.value;
-  el.innerHTML = `<option value="">All</option>` + opts.map(o=>`<option value="${o}"${o===cur?'selected':''}>${o}</option>`).join('');
-}
-
-// ── Section 5: NDR & RTO ──────────────────────────────────────────────────────
-function renderNDR(m) {
-  document.getElementById('ndr-kpi-row').innerHTML = [
-    kpiCard('NDR / Failed', m.ndr, `${+(m.ndr/m.total*100).toFixed(1)}% rate`, 'amber'),
-    kpiCard('RTO Total', m.rto, `${+(m.rto/m.total*100).toFixed(1)}% return rate`, 'red'),
-    kpiCard('Est. COD Impact', `₹${(m.rto*250).toLocaleString()}`, 'at ₹250/shipment', 'orange'),
-  ].join('');
-
-  mkChart('ch-ndr-reasons', {
-    type:'bar',
-    data:{
-      labels: m.ndr_reasons.map(r=>r.reason.length>25?r.reason.slice(0,25)+'…':r.reason),
-      datasets:[{data:m.ndr_reasons.map(r=>r.count),backgroundColor:'rgba(192,120,32,.75)',borderRadius:4}]
-    },
-    options:{...baseOpts({indexAxis:'y'})}
-  });
-
-  mkChart('ch-rto-courier', {
-    type:'bar',
-    data:{
-      labels: m.couriers.map(c=>c.name),
-      datasets:[{
-        data: m.couriers.map(c=>c.rto_pct),
-        backgroundColor: m.couriers.map(c=>(COURIER_CFG[c.name]||{color:'#7A6E63'}).color+'AA'),
-        borderRadius:4,
-      }]
-    },
-    options:{...baseOpts({indexAxis:'y'})}
-  });
-
-  const playbook = {
-    'Customer not available': 'Schedule callback within 2h. Send SMS with estimated delivery window.',
-    'Address not found': 'Verify address with customer. Provide landmark. Escalate if 2nd attempt fails.',
-    'Refused delivery': 'RTO trigger. Verify COD amount discrepancy. Initiate return immediately.',
-    'Out of delivery area': 'Reassign to local partner. Consider third-party last-mile.',
-    'Customer requested reschedule': 'Update delivery slot. Confirm via SMS/WhatsApp.',
-    'Fake delivery attempt': 'Flag courier for audit. Request GPS proof. Escalate to account manager.',
-  };
-  document.getElementById('ndr-playbook').innerHTML =
-    m.ndr_reasons.slice(0,6).map(r=>`<div class="pk-card">
-      <div class="pk-reason">${r.reason||'Unknown'} <span style="color:var(--muted);font-weight:400">(${r.count})</span></div>
-      <div class="pk-action">${playbook[r.reason] || 'Follow standard NDR resolution process. Update status within 24h.'}</div>
-    </div>`).join('');
-}
-
-// ── Section 6: Geographic ─────────────────────────────────────────────────────
-function renderGeo(m) {
-  const top10 = m.geo.slice(0,10);
-  mkChart('ch-state-vol', {
-    type:'bar',
-    data:{
-      labels: top10.map(g=>g.state),
-      datasets:[{data:top10.map(g=>g.volume),backgroundColor:'rgba(139,58,82,.7)',borderRadius:4}]
-    },
-    options:baseOpts()
-  });
-  mkChart('ch-state-rto', {
-    type:'bar',
-    data:{
-      labels: top10.map(g=>g.state),
-      datasets:[{data:top10.map(g=>g.rto_pct),backgroundColor:'rgba(192,64,48,.7)',borderRadius:4}]
-    },
-    options:baseOpts()
-  });
-
-  document.getElementById('geo-table').innerHTML = `<table>
-    <thead><tr><th>State</th><th>Region</th><th>Volume</th><th>Del %</th><th>Avg D2D</th><th>RTO %</th><th>EDD Breaches</th><th>Assessment</th></tr></thead>
-    <tbody>${m.geo.map(g=>`<tr>
-      <td><strong>${g.state}</strong></td><td>${g.region}</td>
-      <td class="mono">${g.volume}</td>
-      <td class="mono">${g.del_pct}%</td>
-      <td class="mono">${g.avg_d2d?g.avg_d2d+'d':'—'}</td>
-      <td class="mono">${g.rto_pct}%</td>
-      <td class="mono">${g.edd_breaches}</td>
-      <td><span class="assess-${g.assess.toLowerCase()}">${g.assess}</span></td>
-    </tr>`).join('')}
+// ─── SECTION: GEOGRAPHIC ─────────────────────────────────────────────────
+function rGe(m){
+  const t10=m.geo.slice(0,10);
+  mk('ch-gv',{type:'bar',data:{labels:t10.map(g=>g.st),datasets:[{data:t10.map(g=>g.v),backgroundColor:'rgba(140,58,80,.75)',borderRadius:4}]},options:bOpts()});
+  mk('ch-gr',{type:'bar',data:{labels:t10.map(g=>g.st),datasets:[{data:t10.map(g=>g.rp),backgroundColor:'rgba(192,56,64,.75)',borderRadius:4}]},options:bOpts()});
+  document.getElementById('ge-tbl').innerHTML=`<table><thead><tr><th>State</th><th>Region</th><th>Vol</th><th>Del%</th><th>Avg D2D</th><th>RTO%</th><th>EDD Br.</th><th>Status</th></tr></thead><tbody>
+    ${m.geo.map(g=>`<tr><td><strong>${g.st}</strong></td><td>${g.rg}</td><td class="mono">${g.v}</td><td class="mono">${g.dp}%</td><td class="mono">${g.d2a||'—'}d</td><td class="mono">${g.rp}%</td><td class="mono">${g.br}</td><td><span class="${g.as.toLowerCase()}">${g.as}</span></td></tr>`).join('')}
     </tbody></table>`;
 }
 
-// ── Section 7: Volume Trend ───────────────────────────────────────────────────
-function renderTrend(m) {
-  mkChart('ch-trend-line', {
-    type:'line',
-    data:{
-      labels: m.daily.map(d=>d.date.slice(5)),
-      datasets:[
-        {label:'Dispatched',data:m.daily.map(d=>d.dispatched),borderColor:'#8B3A52',backgroundColor:'#8B3A5222',fill:true,tension:.3,pointRadius:2},
-        {label:'Delivered', data:m.daily.map(d=>d.delivered), borderColor:'#2A7A50',backgroundColor:'#2A7A5022',fill:true,tension:.3,pointRadius:2},
-        {label:'RTO',       data:m.daily.map(d=>d.rto),       borderColor:'#C04030',backgroundColor:'transparent',tension:.3,pointRadius:2,borderDash:[4,4]},
-        {label:'NDR',       data:m.daily.map(d=>d.ndr),       borderColor:'#C07820',backgroundColor:'transparent',tension:.3,pointRadius:2,borderDash:[2,4]},
-      ]
-    },
-    options:{...baseOpts(),plugins:{legend:{display:true,position:'top',labels:{font:{size:11},boxWidth:12}}}}
-  });
-
-  document.getElementById('trend-table').innerHTML = `<table>
-    <thead><tr><th>Date</th><th>Dispatched</th><th>Delivered</th><th>RTO</th><th>NDR</th></tr></thead>
-    <tbody>${[...m.daily].reverse().map(d=>`<tr>
-      <td class="mono">${d.date}</td>
-      <td class="mono">${d.dispatched}</td>
-      <td class="mono">${d.delivered}</td>
-      <td class="mono">${d.rto}</td>
-      <td class="mono">${d.ndr}</td>
-    </tr>`).join('')}
+// ─── SECTION: VOLUME TREND ───────────────────────────────────────────────
+function rTr(m){
+  mk('ch-tl',{type:'line',data:{
+    labels:m.daily.map(d=>d.dt.slice(5)),
+    datasets:[
+      {label:'Dispatched',data:m.daily.map(d=>d.d),borderColor:'#8C3A50',backgroundColor:'#8C3A5018',fill:true,tension:.35,pointRadius:0,borderWidth:2},
+      {label:'Delivered', data:m.daily.map(d=>d.dl),borderColor:'#2A7A52',backgroundColor:'#2A7A5218',fill:true,tension:.35,pointRadius:0,borderWidth:2},
+      {label:'RTO',data:m.daily.map(d=>d.r),borderColor:'#C03840',backgroundColor:'transparent',tension:.3,pointRadius:0,borderWidth:1.5,borderDash:[5,4]},
+      {label:'NDR',data:m.daily.map(d=>d.n),borderColor:'#BF6E10',backgroundColor:'transparent',tension:.3,pointRadius:0,borderWidth:1.5,borderDash:[3,4]},
+    ]},
+    options:{...bOpts(),plugins:{legend:{display:true,position:'top',labels:{boxWidth:10,font:{size:11},padding:14}},
+      tooltip:{backgroundColor:'#fff',titleColor:'#18150F',bodyColor:'#6B6560',borderColor:'rgba(0,0,0,.1)',borderWidth:1,mode:'index',intersect:false}}}});
+  document.getElementById('tr-tbl').innerHTML=`<table><thead><tr><th>Date</th><th>Dispatched</th><th>Delivered</th><th>RTO</th><th>NDR</th></tr></thead><tbody>
+    ${[...m.daily].reverse().map(d=>`<tr><td class="mono">${d.dt}</td><td class="mono">${d.d}</td><td class="mono">${d.dl}</td><td class="mono">${d.r}</td><td class="mono">${d.n}</td></tr>`).join('')}
     </tbody></table>`;
 }
 
-// ── Section 8: Quantity & RTO ─────────────────────────────────────────────────
-function renderQty(m) {
-  const qa = m.qty_analysis;
-  const er = m.edd_rto;
-
-  document.getElementById('qty-kpi-row').innerHTML = [
-    kpiCard('Total Orders', m.total, 'with quantity data', 'accent'),
-    kpiCard('Avg Quantity', qa.avg_qty||'—', 'items per shipment', 'teal'),
-    kpiCard('RTO Trend', qa.rto_trend||'—', 'across quantity buckets', qa.rto_trend==='increases with quantity'?'red':'green'),
-  ].join('');
-
-  if (!qa.has_data) {
-    document.getElementById('qty-no-data').style.display='block';
-    document.getElementById('qty-content').style.display='none';
-    return;
-  }
-  document.getElementById('qty-no-data').style.display='none';
-  document.getElementById('qty-content').style.display='block';
-
-  const bkts = qa.buckets;
-  mkChart('ch-qty-rto', {
-    type:'bar',
-    data:{
-      labels: bkts.map(b=>b.bucket),
-      datasets:[{label:'RTO %',data:bkts.map(b=>b.rto_pct),backgroundColor:'rgba(192,64,48,.75)',borderRadius:4}]
-    },
-    options:{...baseOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`RTO: ${c.parsed}%`}}}}
-  });
-  mkChart('ch-qty-del', {
-    type:'bar',
-    data:{
-      labels: bkts.map(b=>b.bucket),
-      datasets:[{label:'Delivery %',data:bkts.map(b=>b.del_pct),backgroundColor:'rgba(42,122,80,.75)',borderRadius:4}]
-    },
-    options:{...baseOpts(),plugins:{legend:{display:false}}}
-  });
-
-  document.getElementById('qty-table').innerHTML = `<table>
-    <thead><tr><th>Quantity</th><th>Orders</th><th>Delivery %</th><th>RTO %</th><th>NDR %</th></tr></thead>
-    <tbody>${bkts.map(b=>`<tr>
-      <td><strong>${b.bucket}</strong></td>
-      <td class="mono">${b.count}</td>
-      <td class="mono">${b.del_pct}%</td>
-      <td class="mono">${b.rto_pct}%</td>
-      <td class="mono">${b.ndr_pct}%</td>
-    </tr>`).join('')}
+// ─── SECTION: QTY & RTO ──────────────────────────────────────────────────
+function rQt(m){
+  const qa=m.qa,er=m.er;
+  document.getElementById('qt-kpi').innerHTML=`
+    <div class="kpi p"><div class="kpi-lbl">Avg Quantity</div><div class="kpi-v">${qa.avg||'—'}</div><div class="kpi-s">items per order</div></div>
+    <div class="kpi ${qa.trend==='increases with quantity'?'r':'g'}"><div class="kpi-lbl">RTO Trend</div><div class="kpi-v" style="font-size:16px;font-family:'Inter'">${qa.trend||'—'}</div></div>
+    <div class="kpi t"><div class="kpi-lbl">Total Orders</div><div class="kpi-v">${m.n.toLocaleString()}</div></div>`;
+  if(!qa.has){document.getElementById('qt-nodata').style.display='block';document.getElementById('qt-body').style.display='none';return;}
+  document.getElementById('qt-nodata').style.display='none';
+  document.getElementById('qt-body').style.display='block';
+  mk('ch-qr',{type:'bar',data:{labels:qa.bkts.map(b=>b.b),datasets:[{label:'RTO%',data:qa.bkts.map(b=>b.rt),backgroundColor:'rgba(192,56,64,.75)',borderRadius:4}]},options:{...bOpts(),plugins:{legend:{display:false},tooltip:{backgroundColor:'#fff',titleColor:'#18150F',bodyColor:'#6B6560',borderColor:'rgba(0,0,0,.1)',borderWidth:1}}}});
+  mk('ch-qd',{type:'bar',data:{labels:qa.bkts.map(b=>b.b),datasets:[{label:'Del%',data:qa.bkts.map(b=>b.dl),backgroundColor:'rgba(42,122,82,.75)',borderRadius:4}]},options:{...bOpts(),plugins:{legend:{display:false},tooltip:{backgroundColor:'#fff',titleColor:'#18150F',bodyColor:'#6B6560',borderColor:'rgba(0,0,0,.1)',borderWidth:1}}}});
+  document.getElementById('qt-tbl').innerHTML=`<table><thead><tr><th>Qty Bucket</th><th>Orders</th><th>Delivery%</th><th>RTO%</th><th>NDR%</th></tr></thead><tbody>
+    ${qa.bkts.map(b=>`<tr><td><strong>${b.b}</strong></td><td class="mono">${b.t}</td><td class="mono">${b.dl}%</td><td class="mono">${b.rt}%</td><td class="mono">${b.nd}%</td></tr>`).join('')}
     </tbody></table>`;
-
-  if (er.has_data && er.groups.length) {
-    mkChart('ch-edd-rto', {
-      type:'bar',
-      data:{
-        labels: er.groups.map(g=>g.label),
-        datasets:[
-          {label:'Delivery %',data:er.groups.map(g=>g.del_pct),backgroundColor:'rgba(42,122,80,.75)',borderRadius:4},
-          {label:'RTO %',     data:er.groups.map(g=>g.rto_pct),backgroundColor:'rgba(192,64,48,.75)',borderRadius:4},
-        ]
-      },
-      options:{...baseOpts(),plugins:{legend:{display:true,position:'top',labels:{font:{size:11},boxWidth:12}}}}
-    });
-    document.getElementById('edd-rto-insight').innerHTML = `
-      <div class="insight" style="margin:10px 0 14px">💡 ${er.insight||'EDD compliance directly impacts delivery outcome.'}</div>
-      ${er.groups.map(g=>`<div class="mbar-wrap">
-        <div class="mbar-label"><span>${g.label} <span style="color:var(--muted)">(${g.count})</span></span><strong>Del ${g.del_pct}% / RTO ${g.rto_pct}%</strong></div>
-        <div class="mbar-track"><div class="mbar-fill" style="width:${g.del_pct}%;background:var(--green)"></div></div>
-      </div>`).join('')}`;
-  } else {
-    document.getElementById('edd-rto-insight').innerHTML = '<div class="insight" style="background:#F5F1EB">Not enough completed shipments to compute EDD-RTO correlation yet. Data will appear once more shipments are finalised.</div>';
-    const canvas = document.getElementById('ch-edd-rto');
-    if (canvas) canvas.parentElement.innerHTML = '<div style="height:180px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px">Awaiting more finalized shipment data</div>';
+  if(er.has){
+    mk('ch-er',{type:'bar',data:{labels:er.grps.map(g=>g.l),
+      datasets:[{label:'Delivery%',data:er.grps.map(g=>g.dl),backgroundColor:'rgba(42,122,82,.75)',borderRadius:4},{label:'RTO%',data:er.grps.map(g=>g.rt),backgroundColor:'rgba(192,56,64,.75)',borderRadius:4}]},
+      options:{...bOpts(),plugins:{legend:{display:true,position:'top',labels:{boxWidth:10,font:{size:10},padding:10}},tooltip:{backgroundColor:'#fff',titleColor:'#18150F',bodyColor:'#6B6560',borderColor:'rgba(0,0,0,.1)',borderWidth:1}}}});
+    document.getElementById('er-ins').innerHTML=`<div class="insight">💡 ${er.ins||'EDD compliance impacts delivery outcome.'}</div>`
+      +er.grps.map(g=>`<div class="mb"><div class="mb-hd"><span>${g.l} <span style="color:var(--hint)">(${g.n})</span></span><strong>Del ${g.dl}% / RTO ${g.rt}%</strong></div><div class="mb-tr"><div class="mb-fl" style="width:${g.dl}%;background:var(--green)"></div></div></div>`).join('');
+  }else{
+    document.getElementById('er-ins').innerHTML=`<div class="insight" style="background:var(--s2);color:var(--sub)">Not enough finalised shipments for EDD-RTO correlation yet.</div>`;
   }
 }
 
-// ── Sidebar & section switching ───────────────────────────────────────────────
-function showSection(name) {
-  currentSection = name;
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('sec-'+name).classList.add('active');
-  const items = document.querySelectorAll('.nav-item');
-  const secNames=['overview','courier','sla','breach','ndr','geo','trend','qty'];
-  const idx = secNames.indexOf(name);
-  if (idx>=0) items[idx].classList.add('active');
-  renderSection(name, compute(filterShipments()));
+// ─── NAVIGATION ──────────────────────────────────────────────────────────
+function go(id){
+  curSec=id;
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nav-i').forEach(n=>n.classList.remove('on'));
+  document.getElementById('sec-'+id).classList.add('on');
+  const idx=SEC_NAMES.indexOf(id);
+  if(idx>=0){document.querySelectorAll('.nav-i')[idx].classList.add('on');document.getElementById('tb-title').textContent=SEC_TITLES[idx];}
+  render();
 }
 
-// ── Dropdowns ────────────────────────────────────────────────────────────────
-function toggleDD(id) {
-  document.querySelectorAll('.dd-panel').forEach(p=>{ if(p.id!==id) p.classList.remove('open'); });
-  document.getElementById(id).classList.toggle('open');
+// ─── DROPDOWN ────────────────────────────────────────────────────────────
+function tdd(id){
+  document.querySelectorAll('.dd-panel').forEach(p=>{if(p.id!==id)p.classList.remove('open');});
+  const el=document.getElementById(id);
+  el.classList.toggle('open');
+  document.querySelectorAll('.dd-btn').forEach(b=>{b.classList.toggle('open-dd',document.getElementById(b.getAttribute('onclick').match(/'([^']+)'/)[1])?.classList.contains('open'));});
 }
-document.addEventListener('click', e => {
-  if (!e.target.closest('.dd-wrap')) document.querySelectorAll('.dd-panel').forEach(p=>p.classList.remove('open'));
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.dd-wrap')){document.querySelectorAll('.dd-panel').forEach(p=>p.classList.remove('open'));document.querySelectorAll('.dd-btn').forEach(b=>b.classList.remove('open-dd'));}
 });
-
-function buildDD(panelId, key, filterKey) {
-  const opts = FOPTS[key] || [];
-  const panel = document.getElementById(panelId);
-  panel.innerHTML = opts.map(o=>`<label class="dd-item">
-    <input type="checkbox" value="${o}" onchange="onDDChange('${filterKey}')"> ${o}
-  </label>`).join('');
+function buildDD(pid,key,fk){
+  const opts=FO[key]||[];
+  document.getElementById(pid).innerHTML=opts.map(o=>`<label class="dd-item"><input type="checkbox" value="${o}" onchange="onDD('${fk}')"> ${o}</label>`).join('');
 }
-
-function buildPaymentDD() {
-  const panel = document.getElementById('ddp-pm');
-  panel.innerHTML = ['COD','PREPAID'].map(o=>`<label class="dd-item">
-    <input type="checkbox" value="${o}" onchange="onDDChange('pms')"> ${o}
-  </label>`).join('');
+function buildPayDD(){
+  document.getElementById('ddp-p').innerHTML=['COD','PREPAID'].map(o=>`<label class="dd-item"><input type="checkbox" value="${o}" onchange="onDD('ps')"> ${o}</label>`).join('');
 }
-
-function onDDChange(key) {
-  const map = {couriers:'ddp-courier',states:'ddp-state',zones:'ddp-zone',regions:'ddp-region',pms:'ddp-pm'};
-  filters[key] = [...document.querySelectorAll(`#${map[key]} input:checked`)].map(c=>c.value);
+function onDD(k){
+  const m={'cs':'ddp-c','ss':'ddp-s','zs':'ddp-z','rs':'ddp-r','ps':'ddp-p'};
+  F[k]=[...document.querySelectorAll(`#${m[k]} input:checked`)].map(c=>c.value);
   update();
 }
 
-// ── Date filters ──────────────────────────────────────────────────────────────
-function bindDateFilters() {
-  ['f-pu-from','f-pu-to','f-edd-from','f-edd-to'].forEach(id=>{
-    document.getElementById(id).addEventListener('change', e=>{
-      const map = {'f-pu-from':'puFrom','f-pu-to':'puTo','f-edd-from':'eddFrom','f-edd-to':'eddTo'};
-      filters[map[id]] = e.target.value;
-      update();
-    });
+// ─── EXPORT ENGINE ────────────────────────────────────────────────────────
+function csvEsc(v){
+  if(v==null)return'';
+  const s=String(v);
+  if(s.includes(',')||s.includes('"')||s.includes('\n'))return'"'+s.replace(/"/g,'""')+'"';
+  return s;
+}
+function downloadCSV(filename,headers,rows){
+  const lines=[headers.join(','),...rows.map(r=>r.map(csvEsc).join(','))];
+  const blob=new Blob([lines.join('\r\n')],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=filename;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},200);
+  showToast(`✓ Exported ${rows.length} records → ${filename}`);
+}
+function showToast(msg){
+  let t=document.getElementById('exp-toast');
+  if(!t){t=document.createElement('div');t.id='exp-toast';
+    t.style='position:fixed;bottom:24px;right:24px;background:#1B6B45;color:#fff;padding:10px 18px;border-radius:8px;font-size:12px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.25);transition:opacity .3s';
+    document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';
+  clearTimeout(t._tid);t._tid=setTimeout(()=>t.style.opacity='0',3500);
+}
+function today(){return new Date().toISOString().slice(0,10).replace(/-/g,'');}
+
+// EDD breach exports
+function expBr(type){
+  const fl=fs();
+  let rows=fl.filter(s=>s.br);
+  if(type==='attempted')rows=rows.filter(s=>s.bt==='attempted');
+  if(type==='not_attempted')rows=rows.filter(s=>s.bt==='not_attempted');
+  // apply breach sub-filters too
+  const cf=document.getElementById('bf-c')?.value,sf=document.getElementById('bf-s')?.value,
+    stf=document.getElementById('bf-st')?.value,q=(document.getElementById('bf-q')?.value||'').toLowerCase();
+  if(cf)rows=rows.filter(s=>s.c===cf);
+  if(sf)rows=rows.filter(s=>s.dst===sf);
+  if(stf)rows=rows.filter(s=>s.s===stf);
+  if(q)rows=rows.filter(s=>s.awb.toLowerCase().includes(q)||s.dc.toLowerCase().includes(q));
+  const hdrs=['AWB','Courier','Status','Pickup Date','EDD','OFD Date','Days Overdue','Breach Type','State','City','Pincode','Zone','Region','NDR Reason','Payment Mode','Qty'];
+  const data=rows.map(s=>[s.awb,s.c,s.s,s.pd||'',s.edd||'',s.ofd||'',s.dov!=null?Math.round(s.dov):'',s.bt||'',s.dst||'',s.dc||'',s.dp||'',s.z||'',s.rgn||'',s.ndr||'',s.pm||'',s.qty!=null?s.qty:'']);
+  const sfx=type==='all'?'All':type==='attempted'?'Attempted':'NotAttempted';
+  downloadCSV(`EDD_Breach_${sfx}_${today()}.csv`,hdrs,data);
+}
+// Courier escalation pack: one row per courier, breaches sorted by days overdue
+function expBrCourier(){
+  const fl=fs();
+  const rows=fl.filter(s=>s.br).sort((a,b)=>(b.dov||0)-(a.dov||0)).sort((a,b)=>a.c.localeCompare(b.c));
+  const hdrs=['Courier','AWB','Status','Pickup Date','EDD','OFD Date','Days Overdue','Breach Type','State','City','Pincode','NDR Reason'];
+  const data=rows.map(s=>[s.c,s.awb,s.s,s.pd||'',s.edd||'',s.ofd||'',s.dov!=null?Math.round(s.dov):'',s.bt||'',s.dst||'',s.dc||'',s.dp||'',s.ndr||'']);
+  downloadCSV(`Courier_Escalation_Pack_${today()}.csv`,hdrs,data);
+}
+// NDR / failed deliveries
+function expNdr(){
+  const fl=fs();
+  const rows=fl.filter(s=>s.sg==='ndr');
+  const hdrs=['AWB','Courier','Status','Pickup Date','OFD Date','NDR Reason','State','City','Pincode','Zone','Region','Payment Mode','Qty'];
+  const data=rows.map(s=>[s.awb,s.c,s.s,s.pd||'',s.ofd||'',s.ndr||'',s.dst||'',s.dc||'',s.dp||'',s.z||'',s.rgn||'',s.pm||'',s.qty!=null?s.qty:'']);
+  downloadCSV(`NDR_Failed_Deliveries_${today()}.csv`,hdrs,data);
+}
+// RTO shipments
+function expRto(){
+  const fl=fs();
+  const rows=fl.filter(s=>s.sg==='rto');
+  const hdrs=['AWB','Courier','Status','Pickup Date','Final Date','State','City','Pincode','Zone','Region','NDR Reason','Payment Mode','Qty'];
+  const data=rows.map(s=>[s.awb,s.c,s.s,s.pd||'',s.dd||s.fd||'',s.dst||'',s.dc||'',s.dp||'',s.z||'',s.rgn||'',s.ndr||'',s.pm||'',s.qty!=null?s.qty:'']);
+  downloadCSV(`RTO_Shipments_${today()}.csv`,hdrs,data);
+}
+// Lost / stuck 21+ days in transit
+function expLost(){
+  const fl=fs();
+  const now=new Date();now.setHours(0,0,0,0);
+  const rows=fl.filter(s=>{
+    if(!['intransit','ndr','ofd','pending'].includes(s.sg))return false;
+    if(!s.pd)return false;
+    const age=Math.floor((now-new Date(s.pd))/86400000);
+    return age>=21;
+  }).sort((a,b)=>{
+    const nowMs=now.getTime();
+    const da=Math.floor((nowMs-new Date(a.pd))/86400000);
+    const db2=Math.floor((nowMs-new Date(b.pd))/86400000);
+    return db2-da;
   });
+  const now2=new Date();now2.setHours(0,0,0,0);
+  const hdrs=['AWB','Courier','Status','Pickup Date','Days In Transit','EDD','OFD Date','NDR Reason','State','City','Pincode','Zone','Payment Mode','Qty'];
+  const data=rows.map(s=>{
+    const age=Math.floor((now2-new Date(s.pd))/86400000);
+    return[s.awb,s.c,s.s,s.pd||'',age,s.edd||'',s.ofd||'',s.ndr||'',s.dst||'',s.dc||'',s.dp||'',s.z||'',s.pm||'',s.qty!=null?s.qty:''];
+  });
+  downloadCSV(`Lost_Stuck_21Plus_Days_${today()}.csv`,hdrs,data);
+}
+// Full filtered data export
+function expAll(){
+  const fl=fs();
+  const hdrs=['AWB','Courier','Status','Status Group','Pickup Date','Delivery Date','OFD Date','EDD','Days Overdue','D2D Days','State','City','Pincode','Zone','Region','Payment Mode','Qty','NDR Reason','EDD Breached','Breach Type'];
+  const data=fl.map(s=>[s.awb,s.c,s.s,s.sg,s.pd||'',s.dd||'',s.ofd||'',s.edd||'',s.dov!=null?Math.round(s.dov):'',s.d2d!=null?s.d2d:'',s.dst||'',s.dc||'',s.dp||'',s.z||'',s.rgn||'',s.pm||'',s.qty!=null?s.qty:'',s.ndr||'',s.br?'Yes':'No',s.bt||'']);
+  downloadCSV(`Proship_Full_Export_${today()}.csv`,hdrs,data);
 }
 
-function clearFilters() {
-  Object.keys(filters).forEach(k=>{ filters[k] = Array.isArray(filters[k])?[]:'' });
-  ['f-pu-from','f-pu-to','f-edd-from','f-edd-to'].forEach(id=>document.getElementById(id).value='');
+// ─── DATE FILTERS ─────────────────────────────────────────────────────────
+function bindDates(){
+  document.getElementById('f-pf').addEventListener('change',e=>{F.pf=e.target.value;update();});
+  document.getElementById('f-pt').addEventListener('change',e=>{F.pt=e.target.value;update();});
+}
+function clearF(){
+  Object.keys(F).forEach(k=>{F[k]=Array.isArray(F[k])?[]:''});
+  ['f-pf','f-pt'].forEach(id=>document.getElementById(id).value='');
   document.querySelectorAll('.dd-panel input[type=checkbox]').forEach(c=>c.checked=false);
-  document.getElementById('chip-row').innerHTML='';
+  document.getElementById('chips').innerHTML='';
   update();
 }
 
-// ── Filter chips ──────────────────────────────────────────────────────────────
-function renderChips() {
-  const chips = [];
-  const add = (label, clear) => chips.push(`<span class="chip">${label}<span class="chip-x" onclick="${clear}">×</span></span>`);
-  if (filters.puFrom) add(`Pickup from ${filters.puFrom}`, `filters.puFrom='';document.getElementById('f-pu-from').value='';update()`);
-  if (filters.puTo)   add(`Pickup to ${filters.puTo}`,   `filters.puTo='';document.getElementById('f-pu-to').value='';update()`);
-  if (filters.eddFrom) add(`EDD from ${filters.eddFrom}`, `filters.eddFrom='';document.getElementById('f-edd-from').value='';update()`);
-  if (filters.eddTo)   add(`EDD to ${filters.eddTo}`,   `filters.eddTo='';document.getElementById('f-edd-to').value='';update()`);
-  filters.couriers.forEach(c=>add(`Courier: ${c}`,`filters.couriers=filters.couriers.filter(x=>x!=='${c}');update()`));
-  filters.states.forEach(s=>add(`State: ${s}`,`filters.states=filters.states.filter(x=>x!=='${s}');update()`));
-  filters.zones.forEach(z=>add(`Zone: ${z}`,`filters.zones=filters.zones.filter(x=>x!=='${z}');update()`));
-  filters.regions.forEach(r=>add(`Region: ${r}`,`filters.regions=filters.regions.filter(x=>x!=='${r}');update()`));
-  filters.pms.forEach(p=>add(`Pay: ${p}`,`filters.pms=filters.pms.filter(x=>x!=='${p}');update()`));
-  document.getElementById('chip-row').innerHTML = chips.join('');
+// ─── CHIPS ────────────────────────────────────────────────────────────────
+function rChips(){
+  const ch=[];
+  const a=(l,clr)=>ch.push(`<span class="chip">${l}<span class="chip-x" onclick="${clr}">×</span></span>`);
+  if(F.pf)a(`From ${F.pf}`,`F.pf='';document.getElementById('f-pf').value='';update()`);
+  if(F.pt)a(`To ${F.pt}`,`F.pt='';document.getElementById('f-pt').value='';update()`);
+  F.cs.forEach(c=>a(`${c}`,`F.cs=F.cs.filter(x=>x!=='${c}');update()`));
+  F.ss.forEach(s=>a(`${s}`,`F.ss=F.ss.filter(x=>x!=='${s}');update()`));
+  F.zs.forEach(z=>a(`Zone:${z}`,`F.zs=F.zs.filter(x=>x!=='${z}');update()`));
+  F.rs.forEach(r=>a(`${r}`,`F.rs=F.rs.filter(x=>x!=='${r}');update()`));
+  F.ps.forEach(p=>a(`${p}`,`F.ps=F.ps.filter(x=>x!=='${p}');update()`));
+  document.getElementById('chips').innerHTML=ch.join('');
 }
 
-// ── Main update ───────────────────────────────────────────────────────────────
-function update() {
-  renderChips();
-  const m = compute(filterShipments());
-  document.getElementById('sb-breach-cnt').textContent = m.breached;
-  renderSection(currentSection, m);
+// ─── RENDER ───────────────────────────────────────────────────────────────
+function render(){
+  const fl=fs(),m=cm(fl);
+  document.getElementById('tb-count').textContent=fl.length+' records';
+  document.getElementById('sb-br').textContent=m.br;
+  const rmap={ov:rOv,sc:rSc,sl:rSl,br:rBr,nd:rNd,ge:rGe,tr:rTr,qt:rQt};
+  if(rmap[curSec])rmap[curSec](m);
 }
+function update(){rChips();render();}
 
-// ── Init ──────────────────────────────────────────────────────────────────────
-function init() {
-  // Sidebar meta
-  document.getElementById('sb-gen-time').textContent = `Generated ${META.generated_at||''}`;
-  document.getElementById('sb-total').textContent  = (META.total||0).toLocaleString();
-  document.getElementById('sb-locked').textContent = (META.locked||0).toLocaleString();
-  document.getElementById('sb-active').textContent = (META.active||0).toLocaleString();
-
-  const m0 = METRICS.kpis || {};
-  document.getElementById('sb-date-range').textContent =
-    m0.pickup_min && m0.pickup_max ? `${m0.pickup_min} → ${m0.pickup_max}` : '';
-
-  // Build dropdowns
-  buildDD('ddp-courier','couriers','couriers');
-  buildDD('ddp-state',  'states',  'states');
-  buildDD('ddp-zone',   'zones',   'zones');
-  buildDD('ddp-region', 'regions', 'regions');
-  buildPaymentDD();
-
-  // Set default date range from data
-  if (FOPTS.pickup_min) document.getElementById('f-pu-from').value = FOPTS.pickup_min;
-  if (FOPTS.pickup_max) document.getElementById('f-pu-to').value   = FOPTS.pickup_max;
-
-  bindDateFilters();
-
-  // Initial render
+// ─── INIT ─────────────────────────────────────────────────────────────────
+function init(){
+  document.getElementById('sb-gen').textContent=META.generated_at||'';
+  document.getElementById('sb-tot').textContent=(META.total||0).toLocaleString();
+  document.getElementById('sb-lk').textContent=(META.locked||0).toLocaleString();
+  document.getElementById('sb-ac').textContent=(META.active||0).toLocaleString();
+  const kp=DATA.metrics?.kpis||{};
+  if(kp.pickup_min&&kp.pickup_max)document.getElementById('sb-dr').textContent=kp.pickup_min+' → '+kp.pickup_max;
+  buildDD('ddp-c','couriers','cs');
+  buildDD('ddp-s','states','ss');
+  buildDD('ddp-z','zones','zs');
+  buildDD('ddp-r','regions','rs');
+  buildPayDD();
+  if(FO.pickup_min)document.getElementById('f-pf').value=FO.pickup_min;
+  if(FO.pickup_max)document.getElementById('f-pt').value=FO.pickup_max;
+  bindDates();
   update();
-  document.getElementById('sb-breach-cnt').textContent = compute(filterShipments()).breached;
 }
-
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
 </html>
